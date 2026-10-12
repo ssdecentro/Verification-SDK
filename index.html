@@ -37,7 +37,8 @@
 
 *{box-sizing:border-box}
 [hidden]{display:none!important}
-html,body{height:100%;overflow:hidden}
+html,body{height:100%;overflow:hidden;overflow:clip}
+.app{width:100%;overflow:hidden;overflow:clip}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:var(--fs-b);line-height:var(--lh);-webkit-font-smoothing:antialiased}
 button,input,select{font:inherit;color:inherit}
 button{cursor:pointer}
@@ -105,7 +106,9 @@ svg.i{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-widt
 
 /* ── stage ── */
 .stage{min-width:0;min-height:0;display:flex;flex-direction:column;align-items:center;gap:10px;padding:12px 16px 12px}
-.flowbar{display:flex;align-items:center;justify-content:center;flex-wrap:nowrap;gap:2px;max-width:100%;overflow:hidden}
+.flowbar{display:flex;align-items:center;justify-content:flex-start;flex-wrap:nowrap;gap:2px;max-width:100%;overflow-x:auto;scrollbar-width:none}
+.flowbar::-webkit-scrollbar{display:none}
+.flowbar>:first-child{margin-left:auto}.flowbar>:last-child{margin-right:auto}
 .fchip{display:inline-flex;align-items:center;gap:5px;font-size:var(--fs-s);font-weight:500;color:var(--fg-3);padding:3px 8px;flex:none;border-radius:999px;border:1px solid transparent;white-space:nowrap}
 .fchip .n{width:20px;height:20px;border-radius:50%;border:1px solid var(--line-2);display:grid;place-items:center;font-size:10.5px;font-weight:600;color:var(--fg-2);background:var(--panel)}
 .fchip.done{color:var(--fg-2)}
@@ -425,6 +428,97 @@ pre.code{margin:0 0 14px;background:var(--code-bg);color:var(--code-fg);border:1
 /* drawers */
 .dscrim{position:fixed;inset:0;background:var(--scrim);z-index:60;opacity:0;pointer-events:none;transition:opacity .2s}
 .dscrim.on{opacity:1;pointer-events:auto}
+
+/* ══ DEVELOPER MODE ══ */
+body:not(.devmode) .dev-only{display:none!important}
+body.devmode .demo-only{display:none!important}
+.modeseg button{display:inline-flex;align-items:center;gap:5px}
+.modeseg button svg{width:13px;height:13px}
+body.devmode .modeseg button[data-v="dev"][aria-pressed="true"]{background:var(--fg);color:var(--bg);box-shadow:none}
+body.devmode .main{grid-template-columns:clamp(320px,25vw,400px) minmax(0,1fr) clamp(420px,32vw,520px)}
+#devLeft{display:flex;flex-direction:column;gap:12px;min-height:0}
+#demoLeft{display:flex;flex-direction:column;gap:18px}
+.dv-h{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.dv-h b{font-size:var(--fs-t)}
+.dv-h small{color:var(--fg-3);font-size:var(--fs-s)}
+.ed-wrap{display:flex;border:1px solid var(--line);border-radius:10px;background:var(--code-bg);height:clamp(260px,44vh,560px);overflow:hidden}
+.ed-wrap:focus-within{border-color:var(--fg);box-shadow:0 0 0 3px var(--ring)}
+.ed-gut{padding:10px 8px 10px 10px;text-align:right;color:var(--fg-3);font:11.5px/1.6 var(--mono);user-select:none;overflow:hidden;white-space:pre;border-right:1px solid var(--line);min-width:36px}
+#reqEd{flex:1;min-width:0;border:0;background:transparent;resize:none;padding:10px 12px;font:11.5px/1.6 var(--mono);color:var(--code-fg);outline:none;white-space:pre;overflow:auto;tab-size:2}
+#reqEd:focus-visible{box-shadow:none}
+.ed-status{border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:var(--fs-s);line-height:1.5;display:flex;flex-direction:column;gap:4px}
+.ed-status.ok{background:var(--ok-soft);border-color:var(--ok-bd);color:var(--ok)}
+.ed-status.bad{background:var(--err-soft);border-color:var(--err-bd);color:var(--err)}
+.ed-status .w{color:var(--warn)}
+.ed-status code{font-family:var(--mono);font-size:10.5px;font-weight:600}
+.ed-act{display:flex;gap:6px;flex-wrap:wrap}
+.ed-act .tbtn.pri{flex:1;justify-content:center}
+.kbd{font:500 10px/1 var(--mono);border:1px solid currentColor;border-radius:4px;padding:2px 4px;opacity:.7}
+.init{border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.init summary{cursor:pointer;font-size:var(--fs-s);font-weight:600}
+.init .grid{display:grid;grid-template-columns:auto 1fr;gap:6px 10px;align-items:center;margin-top:8px;font-size:var(--fs-s)}
+.init input{height:30px;border:1px solid var(--line);border-radius:7px;padding:0 8px;background:var(--panel);font:11.5px var(--mono);min-width:0;width:100%}
+.mk{display:flex;flex-direction:column;gap:10px}
+.mk-g{display:flex;flex-direction:column;gap:6px;border:1px solid var(--line);border-radius:10px;padding:10px}
+.mk-g h4{margin:0;font-size:var(--fs-s);font-weight:600;display:flex;align-items:center;gap:6px}
+.mk-g h4 code{font:500 10px var(--mono);color:var(--fg-3)}
+.mk-r{display:grid;grid-template-columns:96px minmax(0,1fr);gap:8px;align-items:center;font-size:var(--fs-s);color:var(--fg-2)}
+.mk-r select,.mk-r input{height:30px;border:1px solid var(--line);border-radius:7px;padding:0 6px;background:var(--panel);font-size:var(--fs-s);min-width:0;width:100%}
+/* network */
+.nt-bar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;font-size:var(--fs-s);color:var(--fg-2)}
+.nt-bar label{display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.nr{display:grid;grid-template-columns:42px minmax(0,1fr) auto 52px;gap:8px;align-items:center;width:100%;text-align:left;border:0;border-bottom:1px solid var(--line);background:transparent;padding:7px 4px;font-size:var(--fs-s)}
+.nr:hover{background:var(--panel-2)}
+.nr.on{background:var(--panel-2)}
+.nr .mt{font:600 10.5px var(--mono)}
+.nr .pt{font:11px var(--mono);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nr .pt small{display:block;font-family:var(--sans);font-size:10.5px;color:var(--fg-3)}
+.nr .sc{font:600 10.5px var(--mono);border-radius:5px;padding:1px 6px;border:1px solid}
+.sc.s2{color:var(--ok);background:var(--ok-soft);border-color:var(--ok-bd)} .sc.s4,.sc.s5{color:var(--err);background:var(--err-soft);border-color:var(--err-bd)}
+.nr .du{font:10.5px var(--mono);color:var(--fg-3);text-align:right}
+.nd{padding:8px 4px 14px;border-bottom:1px solid var(--line)}
+.nd .lbl{font-size:10px;font-weight:600;color:var(--fg-3);text-transform:uppercase;letter-spacing:.06em;margin:10px 0 4px;display:flex;justify-content:space-between;align-items:center}
+.nd pre.code{margin:0;max-height:260px;overflow:auto}
+.nd .kv{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;font-size:var(--fs-s)}
+.nd .kv span{color:var(--fg-3)} .nd .kv b{font:500 11px var(--mono);overflow-wrap:anywhere}
+.tbtn.xs{height:26px;padding:0 8px;font-size:11px}
+/* callbacks */
+.cb{border:1px solid var(--line);border-radius:10px;margin-bottom:8px;overflow:hidden}
+.cb summary{display:flex;align-items:center;gap:8px;padding:8px 10px;cursor:pointer;font-size:var(--fs-s);list-style:none}
+.cb summary::-webkit-details-marker{display:none}
+.cb summary .t{margin-left:auto;font:10.5px var(--mono);color:var(--fg-3)}
+.cb pre.code{margin:0;border:0;border-top:1px solid var(--line);border-radius:0;max-height:420px;overflow:auto}
+/* screens gallery */
+.pvg{margin-bottom:12px}
+.pvg h5{margin:0 0 6px;font-size:10px;font-weight:600;color:var(--fg-3);text-transform:uppercase;letter-spacing:.06em}
+.pvg .l{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.pvb{border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:7px 9px;text-align:left;font-size:var(--fs-s);font-weight:500;display:flex;align-items:center;gap:6px;min-width:0}
+.pvb:hover{border-color:var(--fg)}
+.pvb.on{border-color:var(--fg);box-shadow:0 0 0 1px var(--fg)}
+.pvb i{font-style:normal;width:7px;height:7px;border-radius:50%;flex:none;background:var(--fg-3)}
+.pvb i.ok{background:var(--ok)} .pvb i.bad{background:var(--err)} .pvb i.wn{background:var(--warn)}
+.pvb span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* state */
+.stt td code{font-size:10px}
+.pill{display:inline-flex;align-items:center;font-size:10.5px;font-weight:600;border-radius:999px;padding:0 7px;border:1px solid var(--line);background:var(--panel-2);color:var(--fg-2);white-space:nowrap}
+.pill.ok{color:var(--ok);background:var(--ok-soft);border-color:var(--ok-bd)} .pill.bad{color:var(--err);background:var(--err-soft);border-color:var(--err-bd)} .pill.wn{color:var(--warn);background:var(--warn-soft);border-color:var(--warn-bd)}
+/* inspector */
+.device.inspecting .vp,.device.inspecting .vp *{cursor:crosshair!important}
+.insp-box{position:absolute;z-index:90;pointer-events:none;outline:2px solid #c026d3;background:rgba(192,38,211,.08);border-radius:3px}
+.insp-box::after{content:attr(data-n);position:absolute;left:-2px;top:-20px;background:#c026d3;color:#fff;font:600 10px/1 var(--mono);padding:4px 5px;border-radius:3px 3px 3px 0;white-space:nowrap}
+.insp-tip{position:fixed;z-index:200;width:290px;background:#09090b;color:#fafafa;border:1px solid #27272a;border-radius:10px;padding:10px 12px;font-size:11.5px;line-height:1.5;box-shadow:0 16px 40px rgba(0,0,0,.35);pointer-events:none}
+.insp-tip b{display:block;font:600 12.5px var(--mono);margin-bottom:6px;color:#f0abfc}
+.insp-tip .r{display:grid;grid-template-columns:70px 1fr;gap:2px 8px}
+.insp-tip .r span{color:#a1a1aa}
+.insp-tip .r em{font-style:normal;font-family:var(--mono);font-size:10.5px}
+.insp-tip .sw2{display:inline-block;width:10px;height:10px;border-radius:3px;vertical-align:-1px;margin-right:4px;box-shadow:0 0 0 1px rgba(255,255,255,.3)}
+.insp-tip .k{margin-top:6px;padding-top:6px;border-top:1px solid #27272a;color:#d4d4d8;font-family:var(--mono);font-size:10.5px}
+#btnInspect[aria-pressed="true"]{background:#c026d3;border-color:#c026d3;color:#fff}
+.pvchip{display:inline-flex;align-items:center;gap:6px;background:#c026d3;color:#fff;font:600 11px/1 var(--sans);border-radius:999px;padding:4px 10px;margin-right:6px;vertical-align:1px}
+body.devmode .tab{padding:7px 8px 8px}
+@media (max-width:1320px){ body.devmode .main{grid-template-columns:clamp(300px,30vw,380px) minmax(0,1fr)} }
+@media (max-width:980px){ body.devmode .main{grid-template-columns:minmax(0,1fr)} }
+
 @media (max-width:1320px){
   .main{grid-template-columns:292px minmax(0,1fr)}
   .dev{position:fixed;right:0;top:0;bottom:0;width:min(440px,94vw);z-index:70;transform:translateX(102%);transition:transform .28s;box-shadow:-20px 0 40px rgba(0,0,0,.18)}
@@ -442,7 +536,12 @@ pre.code{margin:0 0 14px;background:var(--code-bg);color:var(--code-fg);border:1
   .top{gap:8px}
 }
 @media (max-width:600px){
-  .top{height:48px}
+  .top{height:48px;padding-inline:10px;gap:6px}
+  #btnCtl,#btnDev,#btnRestartTop{font-size:0;gap:0;padding:0 9px}
+  .modeseg button{padding:4px 8px}
+  .modeseg button[data-v="dev"]{font-size:0;gap:0}
+  .brand{flex:none}
+  .brand svg.logo{width:80px;height:16px}
 }
 @media (max-height:700px){ .caption{display:none} }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
@@ -473,16 +572,19 @@ pre.code{margin:0 0 14px;background:var(--code-bg);color:var(--code-fg);border:1
       <span class="tag">RPD · VerifyPay · VBA</span>
     </div>
     <span class="sp"></span>
+    <div class="seg modeseg" id="modeSeg" role="group" aria-label="Mode"><button type="button" data-v="demo" aria-pressed="true">Demo</button><button type="button" data-v="dev" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><path d="m8 7-5 5 5 5M16 7l5 5-5 5"/></svg>Developer</button></div>
     <div class="seg" id="osSeg" role="group" aria-label="Platform">
       <button type="button" data-os="android" aria-pressed="true">Android</button>
       <button type="button" data-os="ios" aria-pressed="false">iOS</button>
     </div>
     <button class="tbtn" id="btnRestartTop" type="button"><svg class="i" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg><span class="t">Restart</span></button>
-    <button class="tbtn pri" id="btnDev" type="button" aria-controls="dev"><svg class="i" viewBox="0 0 24 24"><path d="m8 7-5 5 5 5M16 7l5 5-5 5"/></svg>Developer</button>
+    <button class="tbtn pri" id="btnDev" type="button" aria-controls="dev"><svg class="i" viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M15 5v14"/></svg>Inspector</button>
   </header>
 
   <div class="main">
     <aside class="ctl" id="ctl" aria-label="Journey controls">
+      <div id="devLeft" class="dev-only"></div>
+      <div id="demoLeft" class="demo-only">
       <section class="sec">
         <h3>Journey</h3>
         <div class="jl" id="jlist"></div>
@@ -520,6 +622,7 @@ pre.code{margin:0 0 14px;background:var(--code-bg);color:var(--code-fg);border:1
         <h3>Presenter</h3>
         <div class="row2"><span class="lb">Playback speed<small>Shortens API and polling waits</small></span><div class="seg" id="spSeg"><button type="button" data-v="1">1×</button><button type="button" data-v="2">2×</button><button type="button" data-v="4">4×</button></div></div>
       </section>
+      </div>
     </aside>
 
     <main class="stage">
@@ -555,6 +658,7 @@ pre.code{margin:0 0 14px;background:var(--code-bg);color:var(--code-fg);border:1
                 <div class="dlg" id="dlg" role="dialog" aria-modal="true" aria-labelledby="dlgT"></div>
                 <div class="handoff" id="handoff"></div>
                 <div class="toast" id="toast"></div>
+                <div class="insp-box" id="inspBox" hidden></div>
               </div>
               <div class="nbar"><i></i></div>
             </div>
@@ -565,18 +669,18 @@ pre.code{margin:0 0 14px;background:var(--code-bg);color:var(--code-fg);border:1
       <p class="caption" id="caption"></p>
       <div class="ptools" id="ptools">
         <button class="tbtn" id="btnBack" type="button" title="Android system back"><svg class="i" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>System back</button>
+        <button class="tbtn dev-only" id="btnInspect" type="button" aria-pressed="false" title="Inspect elements (I)"><svg class="i" viewBox="0 0 24 24"><path d="M3 3l7 18 2.5-7.5L20 11z"/></svg>Inspect</button>
         <button class="tbtn" id="btnFill" type="button" hidden><svg class="i" viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>Fill sample details</button>
         <button class="tbtn" id="btnRestart" type="button"><svg class="i" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Restart journey</button>
       </div>
     </main>
 
     <aside class="dev" id="dev" aria-label="Developer handoff">
-      <div class="tabs" role="tablist">
-        <button class="tab" role="tab" data-tab="log" aria-selected="true" type="button">Events<span class="ct" id="logCt">0</span></button>
-        <button class="tab" role="tab" data-tab="req" aria-selected="false" type="button">Integration</button>
-        <button class="tab" role="tab" data-tab="res" aria-selected="false" type="button">Result object</button>
-        <button class="tab" role="tab" data-tab="spec" aria-selected="false" type="button">Screen spec</button>
-      </div>
+      <div class="tabs" role="tablist" id="tabs"></div>
+      <div class="tpanel" id="tp-net" hidden></div>
+      <div class="tpanel" id="tp-cbs" hidden></div>
+      <div class="tpanel spec" id="tp-state" hidden></div>
+      <div class="tpanel" id="tp-scr" hidden></div>
       <div class="tpanel" id="tp-log"><div class="lg" id="log"></div></div>
       <div class="tpanel" id="tp-req" hidden></div>
       <div class="tpanel" id="tp-res" hidden></div>
@@ -584,6 +688,7 @@ pre.code{margin:0 0 14px;background:var(--code-bg);color:var(--code-fg);border:1
     </aside>
   </div>
   <div class="dscrim" id="dscrim"></div>
+  <div class="insp-tip" id="inspTip" hidden></div>
 </div>
 
 <script>
@@ -704,7 +809,9 @@ const st = {
   j:'RPD_VP_VBA', out:'verified', vpr:0,
   cfg:{ expiry:15, vpNM:true, vbaNM:true, vbaType:'pennydrop', mode:'COLLECT', prefill:'editable', keepFail:false, autoClose:0, xob:true },
   th:{ preset:'decentro', dark:false, primary:null, btnStyle:null, btnCase:null },
-  os:'android', speed:1, run:0, logN:0, t0:Date.now()
+  os:'android', speed:1, run:0, logN:0, t0:Date.now(),
+  mode:'demo', base:BASE, urn:{ decfin:'DECFINURN123', decentro:'DECENTROURN456' }, env:'PRODUCTION', xobVal:'SUBMERCHANT01',
+  req:null, pf:{}, tov:null, devMock:null, inspect:false, net:[], cbs:[]
 };
 const cfg = st.cfg;
 
@@ -730,14 +837,18 @@ const contrast = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x,y)
 
 /* ---------- run state ---------- */
 function freshRun(){
+  if (st.pvRestore){ st.pvRestore(); st.pvRestore = null; }
+  st.pv = null;
   st.run++;
-  const pre = cfg.prefill !== 'empty';
+  if (st.mode === 'demo') applyDemo();
+  const pv = k => st.pf[k] && st.pf[k].value ? st.pf[k].value : '';
   Object.assign(st, {
     screen:'host', sdkOpen:false, steps:{}, cnt:{RPD:0,VP:0,VBA:0}, fired:{}, attempt:1, tried:[], attempts:[],
     errRetries:{RPD:0,VP:0,VBA:0}, tokens:{}, consent:false, consentAt:null, app:null, edited:[], prog:{},
     expiryEnd:0, ff:0, back:false, showTry:false, netLost:false, final:null, err:null, last:null, jid:uuid(),
     t0:Date.now(), startedAt:null, touched:{}, showAll:false, hostNote:null, cancelledAt:null, retrying:false,
-    form:{ vpa: pre ? CUST.vpa : '', name: pre ? CUST.typed : '', acct: pre ? CUST.acct : '', acct2:'', ifsc: pre ? CUST.ifsc : '' }
+    form:{ vpa:pv('upi_vpa'), name: J().entry === 'vp' ? pv('customer_name') : pv('name'), acct:pv('account_number'), acct2:'', ifsc:pv('ifsc') },
+    mock: st.mode === 'dev' && st.devMock ? { ...st.devMock } : mockFromOutcome(), net:[], netN:0, polls:{ gts:0, gtv:0 }, cbs:[], polled:false
   });
   st.init = { ...st.form };
 }
@@ -749,31 +860,48 @@ function log(k, html, code){
   st.logN++;
   const el = document.createElement('div'); el.className = 'le new';
   el.innerHTML = `<span class="t">+${fmtT((Date.now()-st.t0)/1000)}</span><span class="k ${k}">${k}</span><span class="m">${html}${code ? `<code>${esc(code)}</code>` : ''}</span>`;
-  $('#log').appendChild(el); $('#logCt').textContent = st.logN;
+  $('#log').appendChild(el); const lc = $('#logCt'); if (lc) lc.textContent = st.logN;
   const p = $('#tp-log'); p.scrollTop = p.scrollHeight;
+  if (st.mode === 'dev') schedState();
 }
-function clearLog(){ $('#log').innerHTML = ''; st.logN = 0; $('#logCt').textContent = '0'; }
+function clearLog(){ $('#log').innerHTML = ''; st.logN = 0; const lc = $('#logCt'); if (lc) lc.textContent = '0'; }
 
 /* ============================================================
    THEME
    ============================================================ */
-function theme(){
+const PALETTE_KEYS = ['primary','on_primary','background','surface','text_primary','text_secondary','border','success','warning','error'];
+function effTheme(){
   const P = PRESETS[st.th.preset], pal = { ...(st.th.dark ? P.dark : P.light) };
   if (st.th.primary) pal.primary = st.th.primary;
+  const T = { P, pal, header:P.header, btnR:P.btnR, btnH:P.btnH, inR:P.inR, cardR:P.cardR, bs:st.th.btnStyle || P.btnStyle, bc:st.th.btnCase || P.btnCase, inStyle:P.inStyle, ts:21, bsz:14.5, cs:12.5, inFill:null, inFocus:null };
+  const o = st.tov;
+  if (o){
+    PALETTE_KEYS.forEach(k => { if (o[k]) pal[k] = o[k]; });
+    if (st.th.dark && o.dark_palette) PALETTE_KEYS.forEach(k => { if (o.dark_palette[k]) pal[k] = o.dark_palette[k]; });
+    if (o.header_title) T.header = o.header_title;
+    if (o.button_corner_radius != null) T.btnR = o.button_corner_radius; if (o.button_height != null) T.btnH = o.button_height;
+    if (o.input_corner_radius != null) T.inR = o.input_corner_radius; if (o.card_corner_radius != null) T.cardR = o.card_corner_radius;
+    if (o.button_style) T.bs = o.button_style; if (o.button_text_case) T.bc = o.button_text_case; if (o.input_style) T.inStyle = o.input_style;
+    if (o.title_size) T.ts = o.title_size; if (o.body_size) T.bsz = o.body_size; if (o.caption_size) T.cs = o.caption_size;
+    T.inFill = o.input_fill || null; T.inFocus = o.input_border_focused || null;
+  }
+  return T;
+}
+function theme(){
+  const T = effTheme(), pal = T.pal;
   const d = $('#device'), s = d.style;
   const map = { '--s-p':pal.primary, '--s-onp':pal.on_primary, '--s-bg':pal.background, '--s-surf':pal.surface, '--s-tx':pal.text_primary, '--s-tx2':pal.text_secondary, '--s-bd':pal.border, '--s-ok':pal.success, '--s-warn':pal.warning, '--s-err':pal.error };
   Object.entries(map).forEach(([k,v]) => s.setProperty(k, v));
-  const bs = st.th.btnStyle || P.btnStyle, bc = st.th.btnCase || P.btnCase;
   s.setProperty('--s-dis', pal.border);
   s.setProperty('--s-dis-tx', `color-mix(in srgb, ${pal.text_secondary} 75%, ${pal.background})`);
-  s.setProperty('--s-in-bg', P.inStyle === 'FILLED' ? pal.surface : pal.background);
-  s.setProperty('--s-in-focus', pal.primary);
-  s.setProperty('--s-font', P.font); s.setProperty('--btn-r', P.btnR+'px'); s.setProperty('--btn-h', P.btnH+'px');
-  s.setProperty('--in-r', P.inR+'px'); s.setProperty('--card-r', P.cardR+'px');
-  s.setProperty('--s-ts','21px'); s.setProperty('--s-bs','14.5px'); s.setProperty('--s-cs','12.5px');
-  d.classList.toggle('btn-outlined', bs === 'OUTLINED'); d.classList.toggle('case-upper', bc === 'UPPERCASE'); d.classList.toggle('in-filled', P.inStyle === 'FILLED');
+  s.setProperty('--s-in-bg', T.inFill || (T.inStyle === 'FILLED' ? pal.surface : pal.background));
+  s.setProperty('--s-in-focus', T.inFocus || pal.primary);
+  s.setProperty('--s-font', T.P.font); s.setProperty('--btn-r', T.btnR + 'px'); s.setProperty('--btn-h', T.btnH + 'px');
+  s.setProperty('--in-r', T.inR + 'px'); s.setProperty('--card-r', T.cardR + 'px');
+  s.setProperty('--s-ts', T.ts + 'px'); s.setProperty('--s-bs', T.bsz + 'px'); s.setProperty('--s-cs', T.cs + 'px');
+  d.classList.toggle('btn-outlined', T.bs === 'OUTLINED'); d.classList.toggle('case-upper', T.bc === 'UPPERCASE'); d.classList.toggle('in-filled', T.inStyle === 'FILLED');
   $('#primaryIn').value = pal.primary;
-  segSet('#bsSeg', bs); segSet('#bcSeg', bc);
+  segSet('#bsSeg', T.bs); segSet('#bcSeg', T.bc);
   $('#darkSw').setAttribute('aria-checked', st.th.dark);
   document.querySelectorAll('#presets .pc').forEach(b => b.setAttribute('aria-pressed', b.dataset.p === st.th.preset));
   const cr = contrast(pal.primary, pal.on_primary), w = $('#cwarn');
@@ -875,6 +1003,7 @@ function caption(){
   else if (s === 'result') t = 'onResult fires before this screen renders, so the merchant app can prepare its next step.';
   else if (s === 'error') t = st.err?.retry ? 'Retry repeats only the step that failed. The ₹1 payment is never taken twice.' : 'This error ends the journey. Close returns the customer to the merchant app.';
   $('#caption').textContent = t;
+  pvBanner();
 }
 
 /* ============================================================
@@ -883,9 +1012,10 @@ function caption(){
 function headClose(){ return ['consent','entry','apps','awaiting'].includes(st.screen); }
 function renderSdk(){
   const P = PRESETS[st.th.preset];
-  $('#shead').innerHTML = `<span class="s-logo">${P.mono}</span><b>${esc(P.header)}</b>${headClose() ? `<button class="s-x" data-act="x" aria-label="Close">${svg('x')}</button>` : ''}`;
+  $('#shead').innerHTML = `<span class="s-logo">${P.mono}</span><b>${esc(effTheme().header)}</b>${headClose() ? `<button class="s-x" data-act="x" aria-label="Close">${svg('x')}</button>` : ''}`;
   const R = { consent:vConsent, entry:vEntry, apps:vApps, awaiting:vAwaiting, verifying:vVerifying, processing:vProcessing, result:vResult, error:vError }[st.screen];
   if (R){ $('#sbody').innerHTML = R(); if (st.screen === 'entry') bindEntry(); tick(); }
+  annotate(); pvBanner();
 }
 function chk(text){
   const t = esc(text).replace('terms and conditions', '<a class="s-link-inline" href="#" data-act="terms">terms and conditions</a>');
@@ -909,8 +1039,8 @@ function vApps(){
     <div class="cs-2"><div><b>Txn ID</b><span>${esc(st.rpdTxn || '')}</span></div><div class="r"><b>Expires In</b><span class="cs-ex js-timer"><span class="tv">--:--</span> mins</span></div></div>
   </div>
   <div class="co-sel"><b>Select a payment option</b><span>Only UPI apps on this phone are shown</span></div>
-  <div class="ops">${APPS.main.map(opRow).join('')}
-    <button class="op-r" data-act="other"><span class="op-ic">${svg('grid')}</span><span class="op-t">Other UPI apps<small>${APPS.other.length} more on this phone</small></span>${svg('chev','i chv')}</button></div>
+  <div class="ops">${appsMain().map(opRow).join('')}
+    ${appsOther().length ? `<button class="op-r" data-act="other"><span class="op-ic">${svg('grid')}</span><span class="op-t">Other UPI apps<small>${appsOther().length} more on this phone</small></span>${svg('chev','i chv')}</button>` : ''}</div>
   <div class="co-tr">${SHIELD}100% Trusted &amp; Secure Payments</div>`;
 }
 function vAwaiting(){
@@ -945,7 +1075,7 @@ function vProcessing(){
   <p class="s-sub">${pend ? 'Your bank is taking a moment. Still checking.' : 'Do not close this screen.'}</p></div>`;
 }
 function vEntry(){
-  const e = J().entry, skip = cfg.mode === 'SKIP', lock = cfg.prefill === 'locked', f = st.form;
+  const e = J().entry, skip = cfg.mode === 'SKIP', f = st.form;
   const attempt = st.attempt > 1 ? `<span class="s-attempt">Attempt ${st.attempt} of 3</span>` : '';
   const inp = (id, label, val, o={}) => {
     const locked = o.lock;
@@ -958,17 +1088,17 @@ function vEntry(){
     h = `<div style="display:flex;flex-direction:column;gap:6px"><h1 class="s-title">Verify your UPI ID</h1>${attempt}</div>`;
     if (skip) h += `<div class="s-ro"><div><span>UPI ID</span><b>${esc(f.vpa)}</b></div>${cfg.vpNM ? `<div><span>Account holder name</span><b>${esc(f.name)}</b></div>` : ''}</div>`;
     else {
-      h += inp('vpa', 'UPI ID', f.vpa, { lock, ph:'name@bank', im:'email' });
-      if (cfg.vpNM) h += inp('name', 'Account holder name', f.name, { lock, ph:'As per bank records', cap:'words' });
+      h += inp('vpa', 'UPI ID', f.vpa, { lock:locked('vpa'), ph:'name@bank', im:'email' });
+      if (cfg.vpNM) h += inp('name', 'Account holder name', f.name, { lock:locked('name'), ph:'As per bank records', cap:'words' });
     }
   } else {
     h = attempt ? `<div>${attempt}</div>` : '';
     if (skip) h += `<div class="s-ro">${f.name ? `<div><span>Account holder name</span><b>${esc(f.name)}</b></div>` : ''}<div><span>Bank account number</span><b>${mask(f.acct)}</b></div><div><span>IFSC code</span><b>${esc(f.ifsc)}</b></div></div>`;
     else {
-      h += inp('name', 'Account holder name', f.name, { lock, ph:'As per bank records', cap:'words', opt:!cfg.vbaNM });
-      h += inp('acct', 'Bank account number', lock ? '•••• •••• ' + f.acct.slice(-4) : f.acct, { lock, ph:'9–18 digits', im:'numeric', max:18 });
-      if (!lock) h += inp('acct2', 'Confirm account number', f.acct2, { ph:'Re-enter account number', im:'numeric', max:18 });
-      h += inp('ifsc', 'IFSC code', f.ifsc, { lock, ph:'e.g. HDFC0000123', cap:'characters', max:11 });
+      h += inp('name', 'Account holder name', f.name, { lock:locked('name'), ph:'As per bank records', cap:'words', opt:!cfg.vbaNM });
+      h += inp('acct', 'Bank account number', locked('acct') ? '•••• •••• ' + f.acct.slice(-4) : f.acct, { lock:locked('acct'), ph:'9–18 digits', im:'numeric', max:18 });
+      if (!locked('acct')) h += inp('acct2', 'Confirm account number', f.acct2, { ph:'Re-enter account number', im:'numeric', max:18 });
+      h += inp('ifsc', 'IFSC code', f.ifsc, { lock:locked('ifsc'), ph:'e.g. HDFC0000123', cap:'characters', max:11 });
     }
   }
   h += `<div style="margin-top:6px">${chk(CONSENT[st.j].text)}</div>`;
@@ -991,7 +1121,7 @@ function validate(){
     else if (n && /[@#$%^&*]/.test(n)) er.name = 'Name must not contain special characters.';
     else if (n && n.length < 2) er.name = 'Name must be at least 2 characters.';
     if (!/^\d{9,18}$/.test(f.acct)) er.acct = 'Please enter a valid account number (9–18 digits).';
-    if (cfg.prefill !== 'locked' && f.acct2 !== f.acct) er.acct2 = 'Account numbers do not match.';
+    if (!locked('acct') && f.acct2 !== f.acct) er.acct2 = 'Account numbers do not match.';
     if (!/^[A-Z]{4}0[A-Z0-9]{6}$/.test(f.ifsc)) er.ifsc = 'Please enter a valid 11-character IFSC code.';
   }
   return { ok: !Object.keys(er).length && st.consent, er };
@@ -1011,7 +1141,6 @@ function paintEntry(){
   return v;
 }
 function bindEntry(){
-  const lock = cfg.prefill === 'locked';
   ['vpa','name','acct','acct2','ifsc'].forEach(k => {
     const i = $('#f-'+k); if (!i || i.readOnly) return;
     i.addEventListener('input', () => {
@@ -1026,7 +1155,7 @@ function bindEntry(){
     });
     if (k === 'acct') i.addEventListener('focus', () => { i.value = st.form.acct; });
   });
-  if (!lock && $('#f-acct') && /^\d{9,18}$/.test(st.form.acct) && document.activeElement !== $('#f-acct')) $('#f-acct').value = '•••• •••• ' + st.form.acct.slice(-4);
+  if (!locked('acct') && $('#f-acct') && /^\d{9,18}$/.test(st.form.acct) && document.activeElement !== $('#f-acct')) $('#f-acct').value = '•••• •••• ' + st.form.acct.slice(-4);
   paintEntry();
 }
 
@@ -1041,8 +1170,15 @@ function stepMark(p){
   return `<span class="bad">${svg('x')}${STEPNAME[p]}</span>`;
 }
 const paid = () => st.steps.RPD?.status === 'SUCCESS';
+const PFKEY = k => ({ vpa:'upi_vpa', name: J().entry === 'vp' ? 'customer_name' : 'name', acct:'account_number', ifsc:'ifsc' }[k]);
+function locked(k){ const f = st.pf[PFKEY(k)]; return !!(f && f.value && f.editable === false); }
+function anyEditable(){
+  const e = J().entry;
+  if (e === 'vp') return st.j === 'VP_VBA' ? !locked('vpa') : (!locked('vpa') || (cfg.vpNM && !locked('name')));
+  return !locked('name') || !locked('acct') || !locked('ifsc');
+}
 function canModify(){
-  const j = J(), f = st.final; if (!j.entry || !f || cfg.mode === 'SKIP' || cfg.prefill === 'locked' || st.attempt >= 3) return false;
+  const j = J(), f = st.final; if (!j.entry || !f || cfg.mode === 'SKIP' || !anyEditable() || st.attempt >= 3) return false;
   if (j.entry === 'vp') return f.status === 'NOT_VERIFIED' && f.failed === 'VP';
   return ['NOT_VERIFIED','INCONCLUSIVE'].includes(f.status) && f.failed === 'VBA';
 }
@@ -1108,7 +1244,9 @@ function errDef(key, step){
     velocity:{ h:'Too many attempts', r:'Please wait a while before verifying this UPI ID again.', retry:false, code:'VELOCITY_LIMIT', step:'VP', rk:'error_frequency_limit_breached', http:429 },
     vba:{ h:'Something went wrong', r: j === 'RPD_VBA' ? "We couldn't validate your account. Please try again." : "We're experiencing technical difficulties. Please try again.", retry:true, code:'PROVIDER_ERROR', step:'VBA', rk:'error_internal_server_error', http:500 },
     unavail:{ h:'Verification unavailable', r:"We can't verify your account right now. Please try later.", retry:false, code:'SERVICE_UNAVAILABLE', step:'VBA', rk:'error_insufficient_credits', http:400 },
-    masked:{ h:'Verification unavailable', r:"We can't verify your account right now. Please try later.", retry:false, code:'MASKED_ACCOUNT_DATA', step, rk:null, http:null }
+    masked:{ h:'Verification unavailable', r:"We can't verify your account right now. Please try later.", retry:false, code:'MASKED_ACCOUNT_DATA', step, rk:null, http:null },
+    missing:{ h:"We couldn't confirm your payment", r:'Any ₹1 debited will be refunded within 3 working days.', retry:false, code:'MISSING_PAYER_DATA', step:'RPD', rk:'success_transaction_status_fetched', http:200 },
+    vp_timeout:{ h:'Something went wrong', r: j === 'VP' ? "We're experiencing technical difficulties. Please try again later." : 'Your bank is not responding. Please try again.', retry:true, code:'TIMEOUT', step:'VP', rk:null, http:null }
   };
   return { key, ...D[key] };
 }
@@ -1129,7 +1267,7 @@ function renderHost(){
     const a = r?.account;
     const msg = { VERIFIED:'Account verified. Payouts can start.', NOT_VERIFIED:'Verification failed. Ask for another account.', INCONCLUSIVE:'Bank could not confirm. Send for manual review.', NRE:'NRE account. Check your policy before paying out.', PENDING:'Waiting on the bank. Confirm from your backend.', ERROR:'Technical error. Offer to try again later.', CANCELLED:'Customer left before finishing.' }[s];
     card = `<div class="h-card h-res"><span class="st" style="background:color-mix(in srgb,${tone} 15%,transparent);color:${tone}">${s.replace('_',' ')}${r?.failed_step ? ' at ' + r.failed_step : ''}</span><h4>${msg}</h4>
-      <div class="kv">${a ? `<span>Name</span><b>${esc(a.name_as_per_bank || '—')}</b><span>Account</span><b>${mask(a.account_number)}</b><span>IFSC</span><b>${esc(a.ifsc || '—')}</b>` : ''}<span>Reference</span><b>${BASE}</b></div></div>`;
+      <div class="kv">${a ? `<span>Name</span><b>${esc(a.name_as_per_bank || '—')}</b><span>Account</span><b>${mask(a.account_number)}</b><span>IFSC</span><b>${esc(a.ifsc || '—')}</b>` : ''}<span>Reference</span><b>${esc(st.base)}</b></div></div>`;
   } else card = `<div class="h-card"><h4>Bank account verification</h4><p>${esc(h.body)}</p></div>`;
   $('#host').innerHTML = `<div class="h-bar"><span class="s-logo">${P.mono}</span><b>${esc(P.merchant)}</b><span class="h-tag">Merchant app</span></div>
   <div class="h-body"><div class="h-hero"><small>${esc(h.eyebrow)}</small><b>${esc(h.title)}</b></div>${card}
@@ -1139,17 +1277,17 @@ function renderHost(){
 /* ---------- overlays ---------- */
 function closeOverlays(){ ['#scrim','#sheet','#dlg'].forEach(s => $(s).classList.remove('on')); }
 function openSheet(){
-  $('#sheet').innerHTML = `<div class="hdl"></div><h4>Other UPI apps</h4><p class="s-cap" style="margin:0 0 12px">Only installed apps are shown</p><div class="ops">${APPS.other.map(opRow).join('')}</div>`;
-  $('#scrim').classList.add('on'); $('#sheet').classList.add('on'); st.overlay = 'sheet'; renderSpec(); log('SDK', 'Bottom sheet: Other UPI apps');
+  $('#sheet').innerHTML = `<div class="hdl"></div><h4>Other UPI apps</h4><p class="s-cap" style="margin:0 0 12px">Only installed apps are shown</p><div class="ops">${appsOther().map(opRow).join('')}</div>`;
+  $('#scrim').classList.add('on'); $('#sheet').classList.add('on'); st.overlay = 'sheet'; annotate(); renderSpec(); log('SDK', 'Bottom sheet: Other UPI apps');
 }
 function openDialog(){
   $('#dlg').innerHTML = `<h4 id="dlgT">Cancel verification?</h4><p>Any ₹1 you paid is refunded within 3 working days.</p><button class="s-btn pri" data-act="keep">Keep waiting</button><button class="s-btn txt" data-act="yescancel">Yes, cancel</button>`;
-  $('#scrim').classList.add('on'); $('#dlg').classList.add('on'); st.overlay = 'dialog'; renderSpec(); log('SDK', 'Dialog: Cancel verification?');
+  $('#scrim').classList.add('on'); $('#dlg').classList.add('on'); st.overlay = 'dialog'; annotate(); renderSpec(); log('SDK', 'Dialog: Cancel verification?');
 }
 function toast(t){ const el = $('#toast'); el.textContent = t; el.classList.add('on'); clearTimeout(st._tt); st._tt = setTimeout(() => el.classList.remove('on'), 2200); }
 async function handoff(app){
-  const H = $('#handoff'), o = st.out;
-  const line = o === 'rpd_declined' ? 'The customer\'s bank declines the payment.' : o === 'rpd_expired' ? 'The customer leaves without paying.' : 'The customer approves ₹1 with their UPI PIN.';
+  const H = $('#handoff'), g = M().gts;
+  const line = g === 'failed' ? 'The customer\'s bank declines the payment.' : g === 'expired' ? 'The customer leaves without paying.' : 'The customer approves ₹1 with their UPI PIN.';
   H.innerHTML = `<span class="tg">Outside the SDK · ${esc(app.n)}</span><div class="big"><img src="${UPI_IC[app.id]}" alt=""></div><div class="amt">₹1.00</div><b>Paying in ${esc(app.n)}</b><p>${line}</p><div class="bar"><i id="hbar"></i></div>`;
   H.classList.add('on'); $('#scr').classList.add('ho');
   requestAnimationFrame(() => { const b = $('#hbar'); b.style.transitionDuration = (2400/st.speed) + 'ms'; requestAnimationFrame(() => b.style.width = '100%'); });
@@ -1157,23 +1295,71 @@ async function handoff(app){
 }
 
 /* ============================================================
+   MOCK SERVER
+   Demo mode: the chosen outcome becomes a mock preset.
+   Developer mode: every response is set per step in the Mock server panel.
+   ============================================================ */
+const MOCK_DEFAULT = { token:'ok', network:'online', apps:5, rpd_intent:'success', gts:'success', payer_name:'ADITI SHARMA', vp:'retrieved', vp_name:'ADITI SHARMA', vba:'valid', vba_name:'ADITI SHARMA', failMode:'first' };
+function mockFromOutcome(){
+  const m = { ...MOCK_DEFAULT }, o = st.out;
+  ({ names_differ: () => { if (has('RPD')) m.payer_name = 'ADITI S'; else m.vba_name = 'ADITI S SHARMA'; },
+     rpd_declined: () => m.gts = 'failed', rpd_expired: () => m.gts = 'expired',
+     vp_fail: () => m.vp = VPR[st.vpr].k, vp_pending: () => m.vp = 'pending_timeout',
+     vba_invalid: () => m.vba = 'invalid', vba_inconclusive: () => m.vba = 'inconclusive', vba_nre: () => m.vba = 'nre',
+     err_link: () => m.rpd_intent = 'provider_error', err_noapp: () => m.apps = 0, err_netwait: () => m.network = 'drop_while_polling',
+     err_unconfirmed: () => m.gts = 'api_failure', err_vp: () => m.vp = 'provider_error', err_velocity: () => m.vp = 'frequency_limit',
+     err_vba: () => m.vba = 'internal_error', err_unavail: () => m.vba = 'insufficient_credits',
+     err_masked: () => { if (st.j === 'RPD_VBA') m.gts = 'success_masked'; else m.vp = 'masked'; },
+     err_offline: () => m.network = 'offline_first', err_session: () => m.token = 'fail' }[o] || (() => {}))();
+  m.failMode = cfg.keepFail ? 'every' : 'first';
+  return m;
+}
+const M = () => st.mock || MOCK_DEFAULT;
+const installed = () => ALLAPPS.slice(0, M().apps);
+const appsMain = () => { const a = installed(); return a.length > 4 ? a.slice(0, 4) : a; };
+const appsOther = () => { const a = installed(); return a.length > 4 ? a.slice(4) : []; };
+
+/* ============================================================
+   NETWORK RECORDER — every call with headers and bodies
+   ============================================================ */
+const HOSTS = { DECFIN:'api.decentro.tech', DECENTRO:'in.decentro.tech' };
+const URN = () => ({ DECFIN:st.urn.decfin, DECENTRO:st.urn.decentro });
+function tokenStr(set){ const t = st.tokens[set]; return t ? t.value : '(none)'; }
+function net(o){
+  const id = ++st.netN;
+  const headers = { 'Authorization':'Bearer ' + tokenStr(o.set), 'Content-Type':'application/json' };
+  if (o.xob && st.xobVal) headers['x_on_behalf_of'] = st.xobVal;
+  const e = { id, at:(Date.now()-st.t0)/1000, kind:o.kind || 'API', step:o.step, method:o.method, host:HOSTS[o.set], path:o.path, set:o.set, ref:o.ref || null,
+    headers, body:o.body || null, http:o.http, res:o.res, ms:o.ms, label:o.label };
+  st.net.push(e);
+  log(e.kind, `${o.label || (o.method + ' ' + e.host + o.path.split('?')[0])} → <span class="${o.cls}">${o.txt}</span>`, o.sum);
+  renderNet();
+}
+const ms = (a, b) => Math.round(a + Math.random()*(b-a));
+const envl = (txn, status, key, data, msg) => ({ decentro_txn_id:txn, api_status:status, response_key:key, message:msg || key.replace(/_/g,' '), ...(data ? { data } : {}) });
+
+/* ============================================================
    FLOWS
    ============================================================ */
-function tokenOk(set, call){ return token(set, call); }
 async function token(set, call){
-  if (st.out === 'err_session' && !st.fired.session){
+  if (M().token === 'fail' && !st.fired.session){
     st.fired.session = true;
+    st.tokens[set] = { value:'eyJhbGciOiJIUzI1NiJ9.' + hex32().slice(0,18).toLowerCase() + '…', exp:Date.now() + 900000 };
     log('TOKEN', `tokenProvider(<b>${set}</b>) → token issued`);
     await sl(500);
-    log('API', `${call} → <span class="rf">401 Unauthorized</span>`);
+    net({ step:J().steps[0], set, method:call.m, path:call.p, http:401, res:{ api_status:'FAILURE', response_key:'error_unauthorized', message:'Token expired or invalid' }, ms:ms(80,160), cls:'rf', txt:'401 Unauthorized', sum:'Auth failure · SDK refreshes the token once and retries' });
     log('TOKEN', `Refresh once: tokenProvider(<b>${set}</b>) → <span class="rf">rejected again</span>`);
+    delete st.tokens[set];
     await sl(300); showError('session', J().steps[0]); return false;
   }
-  if (!st.tokens[set]){ st.tokens[set] = true; log('TOKEN', `tokenProvider(<b>${set}</b>) → short-lived token, cached until expiry`, set === 'DECFIN' ? 'Merchant backend issues it. Used for RPD, VerifyPay, GTS Basic and GTS Verify on api.decentro.tech' : 'Merchant backend issues it. Used for VBA only, on in.decentro.tech'); }
+  if (!st.tokens[set]){
+    st.tokens[set] = { value:'eyJhbGciOiJIUzI1NiJ9.' + hex32().slice(0,18).toLowerCase() + '…', exp:Date.now() + 900000 };
+    log('TOKEN', `tokenProvider(<b>${set}</b>) → short-lived token, cached until expiry`, set === 'DECFIN' ? 'Merchant backend issues it. Used for RPD, VerifyPay, GTS Basic and GTS Verify on api.decentro.tech' : 'Merchant backend issues it. Used for VBA only, on in.decentro.tech');
+  }
   return true;
 }
 async function offline(p){
-  if (st.out === 'err_offline' && !st.fired.offline && J().steps[0] === p){
+  if (M().network === 'offline_first' && !st.fired.offline && J().steps[0] === p){
     st.fired.offline = true; await sl(500);
     log('SDK', `<span class="rf">Device offline</span> · ${p === 'RPD' ? 'RPD Intent' : p === 'VP' ? 'VerifyPay' : 'VBA'} not sent`);
     showError('offline', p); return true;
@@ -1188,22 +1374,28 @@ function recordAttempt(step, ref, input, status, rk){
 }
 
 const rpdIntent = guard(async function(){
-  if (!await token('DECFIN', 'POST /v3/payments/rpd/intent')) return;
+  const path = '/v3/payments/rpd/intent';
+  if (!await token('DECFIN', { m:'POST', p:path })) return;
   if (await offline('RPD')) return;
   await sl(800);
-  const n = ++st.cnt.RPD, ref = BASE + 'RPD' + n;
-  const body = `reference_id ${ref} · consumer_urn DECFINURN123 · expiry_time ${cfg.expiry} · generate_psp_uri true · generate_qr false` + (cfg.xob ? '\nheader x_on_behalf_of SUBMERCHANT01' : '');
-  if (st.out === 'err_link' && !st.fired.link){
+  const n = ++st.cnt.RPD, ref = st.base + 'RPD' + n;
+  const body = { reference_id:ref, consumer_urn:st.urn.decfin, expiry_time:cfg.expiry, generate_psp_uri:true, generate_qr:false };
+  const sum = `reference_id ${ref} · expiry_time ${cfg.expiry}` + (st.xobVal ? ' · x_on_behalf_of ' + st.xobVal : '');
+  if (M().rpd_intent === 'provider_error' && !st.fired.link){
     st.fired.link = true;
-    log('API', `POST api.decentro.tech/v3/payments/rpd/intent → <span class="rf">502 error_provider_error</span>`, body);
-    st.steps.RPD = { product:'RPD', status:'ERROR', reference_id:ref, decentro_txn_id:null, api_status:'FAILURE', response_key:'error_provider_error', error_retries:st.errRetries.RPD, is_masked:false, data:{} };
+    const txn = hex32();
+    net({ step:'RPD', set:'DECFIN', method:'POST', path, ref, body, xob:true, http:502, res:envl(txn, 'FAILURE', 'error_provider_error', null, 'Provider error. Please try again.'), ms:ms(400,900), cls:'rf', txt:'502 error_provider_error', sum });
+    st.steps.RPD = { product:'RPD', status:'ERROR', reference_id:ref, decentro_txn_id:txn, api_status:'FAILURE', response_key:'error_provider_error', error_retries:st.errRetries.RPD, is_masked:false, data:{} };
     showError('link'); return;
   }
   const txn = hex32(); st.rpdTxn = txn;
+  const q = `pa=collect%40psp&pn=${encodeURIComponent(PRESETS[st.th.preset].merchant)}&am=1.00&tr=${ref}&tn=Account%20verification`;
   st.steps.RPD = { product:'RPD', status:'PENDING', reference_id:ref, decentro_txn_id:txn, api_status:'SUCCESS', response_key:'success_validation_link_created', error_retries:st.errRetries.RPD, is_masked:false, data:{} };
-  log('API', `POST api.decentro.tech/v3/payments/rpd/intent → <span class="rs">200 success_validation_link_created</span>`, body + `\n→ decentro_txn_id ${txn}\n→ gpay_uri, phonepe_uri, paytm_uri, validation_link`);
-  if (st.out === 'err_noapp'){ log('SDK', 'Installed UPI apps (TPAPs) → <span class="rf">none found</span>'); showError('noapp'); return; }
-  log('SDK', 'Installed UPI apps → PhonePe, Google Pay, Paytm, BHIM, CRED');
+  net({ step:'RPD', set:'DECFIN', method:'POST', path, ref, body, xob:true, http:200,
+    res:envl(txn, 'SUCCESS', 'success_validation_link_created', { validation_link:'upi://pay?' + q, gpay_uri:'tez://upi/pay?' + q, phonepe_uri:'phonepe://pay?' + q, paytm_uri:'paytmmp://pay?' + q, expiry_time:cfg.expiry }, 'Validation link created'),
+    ms:ms(500,900), cls:'rs', txt:'200 success_validation_link_created', sum:sum + '\n→ decentro_txn_id ' + txn });
+  if (!installed().length){ log('SDK', 'Installed UPI apps (TPAPs) → <span class="rf">none found</span>'); showError('noapp'); return; }
+  log('SDK', 'Installed UPI apps → ' + installed().map(a => a.n).join(', '));
   st.expiryEnd = Date.now() + cfg.expiry*60000; st.ff = 0; st.busy = false; st.retrying = false;
   go('apps');
 });
@@ -1225,41 +1417,45 @@ async function fastForward(){
   st.ff = st.expiryEnd - Date.now() + 50; tick();
 }
 async function pollRpd(){
-  const o = st.out, txn = st.rpdTxn;
-  const P = (res, cls, code) => log('POLL', `GTS Basic → <span class="${cls}">${res}</span>`, code);
-  if (!st.polled){ st.polled = true; log('SDK', 'Polling GTS Basic after the base delay counted from the app tap (OP-5)', `GET api.decentro.tech/v3/payments/transaction/status?decentro_txn_id=${txn}`); }
+  const m = M(), txn = st.rpdTxn, path = `/v3/payments/transaction/status?decentro_txn_id=${txn}`;
+  const P = (http, res, cls, txt, sum) => { st.polls.gts++; net({ kind:'POLL', step:'RPD', set:'DECFIN', method:'GET', path, http, res, ms:ms(150,380), cls, txt, sum, label:'GTS Basic' }); };
+  const pend = () => P(200, envl(txn, 'SUCCESS', 'success_transaction_status_fetched', { transaction_status:'PENDING' }), 'rp', 'transaction_status PENDING');
+  if (!st.polled){ st.polled = true; log('SDK', 'Polling GTS Basic after the base delay counted from the app tap (OP-5)'); }
   await sl(900);
-  if (o === 'err_unconfirmed'){
-    for (let i = 0; i < 2; i++){ P('api_status FAILURE', 'rf'); if (i === 0){ st.showTry = true; renderSdk(); } await sl(1100); }
+  if (m.gts === 'api_failure'){
+    for (let i = 0; i < 2; i++){ P(500, envl(txn, 'FAILURE', 'error_provider_error', null, 'Unable to fetch status'), 'rf', '500 api_status FAILURE'); if (i === 0){ st.showTry = true; renderSdk(); } await sl(1100); }
     log('SDK', 'Polls keep failing. Demo fast-forwards to link expiry.');
-    await fastForward(); P('api_status FAILURE · last poll at expiry', 'rf');
+    await fastForward(); P(500, envl(txn, 'FAILURE', 'error_provider_error', null, 'Unable to fetch status'), 'rf', '500 · last poll at expiry');
     st.steps.RPD.status = 'ERROR'; await hold(); showError('unconfirmed'); return;
   }
-  P('transaction_status PENDING', 'rp'); st.showTry = true; renderSdk();
+  if (m.gts === 'deemed_success'){ P(200, envl(txn, 'SUCCESS', 'success_transaction_status_fetched', { transaction_status:'DEEMED' }), 'rp', 'transaction_status DEEMED', 'Treated as PENDING until a final status (OP-11)'); }
+  else pend();
+  st.showTry = true; renderSdk();
   await sl(1300);
-  if (o === 'err_netwait' && !st.fired.net){
+  if (m.network === 'drop_while_polling' && !st.fired.net){
     st.fired.net = true; st.netLost = true; renderSdk();
     log('SDK', '<span class="rp">Network lost</span> · keep polling with backoff until expiry'); await sl(3200);
     st.netLost = false; renderSdk(); log('SDK', 'Network back · poll at once'); await sl(600);
   }
-  if (o === 'rpd_declined'){
-    P('transaction_status FAILED · remitter bank declined', 'rf');
+  if (m.gts === 'failed'){
+    P(200, envl(txn, 'SUCCESS', 'success_transaction_status_fetched', { transaction_status:'FAILED', error_key:'remitter_bank_declined' }), 'rf', 'transaction_status FAILED · remitter bank declined');
     Object.assign(st.steps.RPD, { status:'FAILED', response_key:'success_transaction_status_fetched' });
     await hold(); return endResult('NOT_VERIFIED', 'RPD', { b:'Payment declined', s:'Your bank declined the ₹1 payment.' });
   }
-  if (o === 'rpd_expired'){
-    P('transaction_status PENDING', 'rp'); await sl(900);
+  if (m.gts === 'expired'){
+    pend(); await sl(900);
     log('SDK', 'Customer never pays. Demo fast-forwards to link expiry.'); await fastForward();
-    P('transaction_status EXPIRED · last poll at expiry', 'rf');
+    P(200, envl(txn, 'SUCCESS', 'success_transaction_status_fetched', { transaction_status:'EXPIRED' }), 'rf', 'transaction_status EXPIRED · last poll at expiry');
     Object.assign(st.steps.RPD, { status:'EXPIRED' });
     await hold(); return endResult('NOT_VERIFIED', 'RPD', { b:'Payment link expired', s:'No money was taken.' });
   }
-  const masked = o === 'err_masked' && st.j === 'RPD_VBA';
-  const d = { payer_vpa:CUST.vpa, payer_name: o === 'names_differ' ? 'ADITI S' : CUST.name, payer_account_number: masked ? 'XXXXXXXXXX7890' : CUST.acct, payer_account_ifsc:CUST.ifsc, payer_account_type:CUST.type, bank_reference_number:'106395651870', npci_txn_id:'HDF1c9555cc3fa64cd2b9dc7c698ee83792', upi_app_used:st.app };
-  Object.assign(st.steps.RPD, { status:'SUCCESS', response_key:'success_transaction_status_fetched', is_masked:masked, data:d });
-  P('transaction_status SUCCESS', 'rs', `payer_vpa ${d.payer_vpa} · payer_name ${d.payer_name}\npayer_account_number ${d.payer_account_number} · ifsc ${d.payer_account_ifsc} · ${d.payer_account_type}`);
+  const masked = m.gts === 'success_masked', novpa = m.gts === 'success_no_vpa';
+  const d = { payer_vpa: novpa ? '' : CUST.vpa, payer_name:m.payer_name, payer_account_number: masked ? 'XXXXXXXXXX7890' : CUST.acct, payer_account_ifsc:CUST.ifsc, payer_account_type:CUST.type, bank_reference_number:'106395651870', npci_txn_id:'HDF1c9555cc3fa64cd2b9dc7c698ee83792' };
+  Object.assign(st.steps.RPD, { status:'SUCCESS', response_key:'success_transaction_status_fetched', is_masked:masked, data:{ ...d, upi_app_used:st.app } });
+  P(200, envl(txn, 'SUCCESS', 'success_transaction_status_fetched', { transaction_status:'SUCCESS', ...d }), 'rs', 'transaction_status SUCCESS', `payer_vpa ${d.payer_vpa || '(empty)'} · payer_name ${d.payer_name} · ${d.payer_account_number} · ${d.payer_account_ifsc}`);
   await hold();
-  if (masked){ log('WARN', 'payer_account_number came back masked · VBA cannot run (OP-1)'); return showError('masked', 'RPD'); }
+  if (novpa){ log('WARN', 'SUCCESS without payer_vpa · cannot continue'); st.steps.RPD.status = 'ERROR'; return showError('missing', 'RPD'); }
+  if (masked && has('VBA') && !has('VP')){ log('WARN', 'payer_account_number came back masked · VBA cannot run (OP-1)'); return showError('masked', 'RPD'); }
   const seq = J().steps;
   if (seq.length === 1) return endResult('VERIFIED');
   st.prog = { RPD:'done' }; go('verifying'); await sl(600);
@@ -1273,100 +1469,126 @@ async function runFrom(p){
 const RUN = {
   async VP(){
     setProg('VP', 'active');
-    if (!await token('DECFIN', 'POST /v3/banking/verify_pay')) return false;
+    const path = '/v3/banking/verify_pay';
+    if (!await token('DECFIN', { m:'POST', p:path })) return false;
     if (await offline('VP')) return false;
-    const fromRpd = has('RPD'), o = st.out;
-    const n = ++st.cnt.VP, ref = BASE + 'VP' + n;
+    const m = M(), fromRpd = has('RPD');
+    const n = ++st.cnt.VP, ref = st.base + 'VP' + n;
     const vpa = fromRpd ? st.steps.RPD.data.payer_vpa : st.form.vpa.trim();
     const cname = cfg.vpNM ? (fromRpd ? st.steps.RPD.data.payer_name : st.form.name.trim()) : null;
-    const body = `reference_id ${ref} · consumer_urn DECFINURN123 · is_consent_granted true\nupi_vpa ${vpa} · perform_name_match ${cfg.vpNM}` + (cname ? ` · customer_name ${cname}` : '') + (cfg.xob ? '\nheader x_on_behalf_of SUBMERCHANT01' : '');
+    const body = { reference_id:ref, consumer_urn:st.urn.decfin, upi_vpa:vpa, is_consent_granted:true, perform_name_match:cfg.vpNM, ...(cname ? { customer_name:cname } : {}), ...(st.req?.vp?.purpose_message ? { purpose_message:st.req.vp.purpose_message } : {}), fetch_branch_details:!!st.req?.vp?.fetch_branch_details };
+    const sum = `reference_id ${ref} · upi_vpa ${vpa}` + (cname ? ` · customer_name ${cname}` : '');
     await sl(1300);
     const txn = hex32();
     const base = { product:'VP', reference_id:ref, decentro_txn_id:txn, error_retries:st.errRetries.VP, is_masked:false };
-    const url = 'POST api.decentro.tech/v3/banking/verify_pay';
-    if (o === 'err_vp' && !st.fired.vp){
-      st.fired.vp = true; log('API', `${url} → <span class="rf">500 error_provider_error</span>`, body);
+    const R = (http, res, cls, txt, extra) => net({ step:'VP', set:'DECFIN', method:'POST', path, ref, body, xob:true, http, res, ms:ms(1800,4200), cls, txt, sum:sum + (extra ? '\n' + extra : '') });
+    if (m.vp === 'provider_error' && !st.fired.vp){
+      st.fired.vp = true; R(500, envl(txn, 'FAILURE', 'error_provider_error', null, 'Bank not responding'), 'rf', '500 error_provider_error');
       st.steps.VP = { ...base, status:'ERROR', api_status:'FAILURE', response_key:'error_provider_error', data:{} };
       setProg('VP', 'fail'); showError('vp'); return false;
     }
-    if (o === 'err_velocity'){
-      log('API', `${url} → <span class="rf">error_frequency_limit_breached</span>`, body + '\nVelocity: 3/min, 4/hour, 5/day per mobile number (OP-10)');
+    if (m.vp === 'timeout' && !st.fired.vpto){
+      st.fired.vpto = true;
+      log('SDK', `<span class="rf">No response from VerifyPay in 30 s</span> · ${ref}`);
+      await sl(700);
+      st.polls.gtv++;
+      net({ kind:'POLL', step:'VP', set:'DECFIN', method:'GET', path:`/v3/banking/account_validation/status?reference_id=${ref}`, http:404, res:{ api_status:'FAILURE', response_key:'error_transaction_not_found', message:'No transaction found for this reference_id' }, ms:ms(150,300), cls:'rf', txt:'404 not found · safe to resend', sum:'Checked by reference_id before any retry', label:'GTS Verify' });
+      st.steps.VP = { ...base, decentro_txn_id:null, status:'ERROR', api_status:null, response_key:null, data:{} };
+      setProg('VP', 'fail'); showError('vp_timeout'); return false;
+    }
+    if (m.vp === 'frequency_limit'){
+      R(429, envl(txn, 'FAILURE', 'error_frequency_limit_breached', null, 'Too many requests for this mobile number'), 'rf', '429 error_frequency_limit_breached', 'Velocity: 3/min, 4/hour, 5/day per mobile number (OP-10)');
       st.steps.VP = { ...base, status:'ERROR', api_status:'FAILURE', response_key:'error_frequency_limit_breached', data:{} };
       setProg('VP', 'fail'); showError('velocity'); return false;
     }
-    if (o === 'vp_fail' && (st.attempt === 1 || cfg.keepFail)){
-      const r = VPR[st.vpr];
-      log('API', `${url} → <span class="rf">${r.k}</span>`, body);
-      st.steps.VP = { ...base, status:'NOT_VERIFIED', api_status: r.k.startsWith('success') ? 'SUCCESS' : 'FAILURE', response_key:r.k, data:{ upi_vpa:vpa } };
-      recordAttempt('VP', ref, vpa, 'NOT_VERIFIED', r.k); setProg('VP', 'fail');
-      endResult('NOT_VERIFIED', 'VP', { b:r.b, s:r.s }); return false;
+    const failKey = VPR.find(r => r.k === m.vp);
+    if (failKey && (st.attempt === 1 || m.failMode === 'every')){
+      const okEnv = failKey.k.startsWith('success');
+      R(200, envl(txn, okEnv ? 'SUCCESS' : 'FAILURE', failKey.k, okEnv ? { upi_vpa:vpa } : null, (failKey.b + ' ' + failKey.s).trim()), 'rf', failKey.k);
+      st.steps.VP = { ...base, status:'NOT_VERIFIED', api_status: okEnv ? 'SUCCESS' : 'FAILURE', response_key:failKey.k, data:{ upi_vpa:vpa } };
+      recordAttempt('VP', ref, vpa, 'NOT_VERIFIED', failKey.k); setProg('VP', 'fail');
+      endResult('NOT_VERIFIED', 'VP', { b:failKey.b, s:failKey.s }); return false;
     }
-    if (o === 'vp_pending'){
-      log('API', `${url} → <span class="rp">PENDING · success_transaction_pending</span>`, body);
+    const masked = m.vp === 'masked';
+    const score = cfg.vpNM ? sim(cname, m.vp_name) : null;
+    const data = { upi_vpa:vpa, name_as_per_bank:m.vp_name, account_number: masked ? 'XXXXXXXXXX7890' : CUST.acct, ifsc:CUST.ifsc, account_type:CUST.type, name_match_score:score, bank_reference_number:'0a3487327d724d1eb429393fb9c90c4d', payout_amount:'1.00', payout_status:'SUCCESS' };
+    if (m.vp === 'pending_timeout' || m.vp === 'pending_then_success'){
+      R(200, envl(txn, 'PENDING', 'success_transaction_pending', null, 'Transaction pending at bank'), 'rp', 'PENDING · success_transaction_pending');
       st.steps.VP = { ...base, status:'PENDING', api_status:'PENDING', response_key:'success_transaction_pending', data:{ upi_vpa:vpa } };
       setProg('VP', 'pend');
-      for (let i = 0; i < 3; i++){ await sl(1300); log('POLL', `GTS Verify → <span class="rp">PENDING</span>`, i === 0 ? `GET api.decentro.tech/v3/banking/account_validation/status?decentro_txn_id=${txn}` : undefined); }
-      await sl(500); log('SDK', 'Polling window ended, VerifyPay still PENDING (OP-14)' + (has('VBA') ? ' · VBA does not run' : ''));
-      recordAttempt('VP', ref, vpa, 'PENDING', 'success_transaction_pending');
-      endResult('PENDING', 'VP'); return false;
+      const gpath = `/v3/banking/account_validation/status?decentro_txn_id=${txn}`;
+      const G = (http, res, cls, txt) => { st.polls.gtv++; net({ kind:'POLL', step:'VP', set:'DECFIN', method:'GET', path:gpath, http, res, ms:ms(150,320), cls, txt, label:'GTS Verify' }); };
+      const rounds = m.vp === 'pending_then_success' ? 2 : 3;
+      for (let i = 0; i < rounds; i++){ await sl(1300); G(200, envl(txn, 'PENDING', 'success_transaction_pending'), 'rp', 'PENDING'); }
+      if (m.vp === 'pending_timeout'){
+        await sl(500); log('SDK', 'Polling window ended, VerifyPay still PENDING (OP-14)' + (has('VBA') ? ' · VBA does not run' : ''));
+        recordAttempt('VP', ref, vpa, 'PENDING', 'success_transaction_pending');
+        endResult('PENDING', 'VP'); return false;
+      }
+      await sl(1300); G(200, envl(txn, 'SUCCESS', 'success_account_details_retrieved', data), 'rs', 'SUCCESS · success_account_details_retrieved');
+    } else {
+      R(200, envl(txn, 'SUCCESS', 'success_account_details_retrieved', data, 'Account details retrieved'), 'rs', '200 success_account_details_retrieved', `→ name_as_per_bank ${data.name_as_per_bank} · ${data.account_number}` + (score != null ? ` · name_match_score ${score}` : ''));
     }
-    const masked = o === 'err_masked' && has('VBA') && st.j !== 'RPD_VBA';
-    const score = cfg.vpNM ? sim(cname, CUST.name) : null;
-    const data = { upi_vpa:vpa, name_as_per_bank:CUST.name, account_number: masked ? 'XXXXXXXXXX7890' : CUST.acct, ifsc:CUST.ifsc, account_type:CUST.type, name_match_score:score, bank_reference_number:'0a3487327d724d1eb429393fb9c90c4d', payout_amount:'1.00', payout_status:'SUCCESS' };
-    log('API', `${url} → <span class="rs">200 success_account_details_retrieved</span>`, body + `\n→ name_as_per_bank ${data.name_as_per_bank} · account_number ${data.account_number} · ifsc ${data.ifsc}` + (score != null ? ` · name_match_score ${score}` : ''));
     st.steps.VP = { ...base, status:'VERIFIED', api_status:'SUCCESS', response_key:'success_account_details_retrieved', is_masked:masked, data };
     recordAttempt('VP', ref, vpa, 'VERIFIED', 'success_account_details_retrieved');
-    if (masked){ log('WARN', 'account_number came back masked · VBA cannot run (OP-1)'); setProg('VP', 'fail'); showError('masked', 'VP'); return false; }
+    if (masked && has('VBA')){ log('WARN', 'account_number came back masked · VBA cannot run (OP-1)'); setProg('VP', 'fail'); showError('masked', 'VP'); return false; }
     setProg('VP', 'done'); await sl(500); return true;
   },
   async VBA(){
     setProg('VBA', 'active');
-    if (!await token('DECENTRO', 'POST /v3/banking/money_transfer/validate_bank_account')) return false;
+    const path = '/v3/banking/money_transfer/validate_bank_account';
+    if (!await token('DECENTRO', { m:'POST', p:path })) return false;
     if (await offline('VBA')) return false;
-    const o = st.out, alone = st.j === 'VBA', V = st.steps.VP?.data, R = st.steps.RPD?.data;
-    const n = ++st.cnt.VBA, ref = BASE + 'VBA' + n;
-    const src = V ? { acct:V.account_number, ifsc:V.ifsc, name:V.name_as_per_bank, from:'VP' } : R ? { acct:R.payer_account_number, ifsc:R.payer_account_ifsc, name:R.payer_name, from:'RPD' } : { acct:st.form.acct, ifsc:st.form.ifsc, name:st.form.name.trim(), from:'entry screen' };
-    const body = `reference_id ${ref} · consumer_urn DECENTROURN456 · validation_type ${cfg.vbaType} · perform_name_match ${cfg.vbaNM} · purpose_message Account Verification\nbeneficiary_details.account_number ${src.acct} · ifsc ${src.ifsc}` + (cfg.vbaNM && src.name ? ` · name ${src.name}` : '') + `  (from ${src.from})\nmobile_number not sent · x_on_behalf_of not sent`;
+    const m = M(), alone = st.j === 'VBA', V = st.steps.VP?.data, Rd = st.steps.RPD?.data;
+    const n = ++st.cnt.VBA, ref = st.base + 'VBA' + n;
+    const src = V ? { acct:V.account_number, ifsc:V.ifsc, name:V.name_as_per_bank, from:'VP' } : Rd ? { acct:Rd.payer_account_number, ifsc:Rd.payer_account_ifsc, name:Rd.payer_name, from:'RPD' } : { acct:st.form.acct, ifsc:st.form.ifsc, name:st.form.name.trim(), from:'entry screen' };
+    const body = { reference_id:ref, consumer_urn:st.urn.decentro, purpose_message:st.req?.vba?.purpose_message || 'Account Verification', validation_type:cfg.vbaType, perform_name_match:cfg.vbaNM, beneficiary_details:{ account_number:src.acct, ifsc:src.ifsc, ...(cfg.vbaNM && src.name ? { name:src.name } : {}) } };
+    const sum = `reference_id ${ref} · ${cfg.vbaType} · ${mask(src.acct)} · ${src.ifsc} (from ${src.from}) · no x_on_behalf_of, no mobile_number`;
     await sl(1300);
-    const base = { product:'VBA', reference_id:ref, decentro_txn_id:hex32(), error_retries:st.errRetries.VBA, is_masked:false };
-    const url = 'POST in.decentro.tech/v3/banking/money_transfer/validate_bank_account';
-    if (o === 'err_vba' && !st.fired.vba){
-      st.fired.vba = true; log('API', `${url} → <span class="rf">500 error_internal_server_error</span>`, body);
+    const txn = hex32();
+    const base = { product:'VBA', reference_id:ref, decentro_txn_id:txn, error_retries:st.errRetries.VBA, is_masked:false };
+    const R = (http, res, cls, txt) => net({ step:'VBA', set:'DECENTRO', method:'POST', path, ref, body, xob:false, http, res, ms:ms(1500,3600), cls, txt, sum });
+    if (m.vba === 'internal_error' && !st.fired.vba){
+      st.fired.vba = true; R(500, envl(txn, 'FAILURE', 'error_internal_server_error', null, 'Internal server error'), 'rf', '500 error_internal_server_error');
       log('WARN', 'VBA has no status API. A retry may drop a second penny (OP-12).');
       st.steps.VBA = { ...base, status:'ERROR', api_status:'FAILURE', response_key:'error_internal_server_error', data:{} };
       setProg('VBA', 'fail'); showError('vba'); return false;
     }
-    if (o === 'err_unavail'){
-      log('API', `${url} → <span class="rf">400 error_insufficient_credits</span>`, body);
+    if (m.vba === 'insufficient_credits'){
+      R(400, envl(txn, 'FAILURE', 'error_insufficient_credits', null, 'Insufficient credits on the merchant account'), 'rf', '400 error_insufficient_credits');
       st.steps.VBA = { ...base, status:'ERROR', api_status:'FAILURE', response_key:'error_insufficient_credits', data:{} };
       setProg('VBA', 'fail'); showError('unavail'); return false;
     }
-    const failNow = !alone || st.attempt === 1 || cfg.keepFail;
+    const failNow = !alone || st.attempt === 1 || m.failMode === 'every';
     const inputMasked = mask(src.acct) + ' · ' + src.ifsc;
-    if (o === 'vba_invalid' && failNow){
+    if (m.vba === 'invalid' && failNow){
       const msg = 'The account number/IFSC passed is invalid.';
-      log('API', `${url} → <span class="rf">account_status invalid</span>`, body);
-      st.steps.VBA = { ...base, status:'INVALID', api_status:'SUCCESS', response_key:'success_account_validation_failed', data:{ beneficiary_name:null, account_status:'invalid', validation_type:cfg.vbaType, validation_message:msg, name_match_percentage:null } };
+      const data = { beneficiary_name:null, account_status:'invalid', validation_type:cfg.vbaType, validation_message:msg, name_match_percentage:null };
+      R(200, envl(txn, 'SUCCESS', 'success_account_validation_failed', data), 'rf', 'account_status invalid');
+      st.steps.VBA = { ...base, status:'INVALID', api_status:'SUCCESS', response_key:'success_account_validation_failed', data };
       recordAttempt('VBA', ref, inputMasked, 'INVALID', 'success_account_validation_failed'); setProg('VBA', 'fail');
       endResult('NOT_VERIFIED', 'VBA', { b:'Invalid account number or IFSC', s:msg }); return false;
     }
-    if (o === 'vba_inconclusive' && failNow){
+    if (m.vba === 'inconclusive' && failNow){
       const msg = 'Bank account details could not be verified.';
-      log('API', `${url} → <span class="rp">account_status inconclusive</span>`, body);
-      st.steps.VBA = { ...base, status:'INCONCLUSIVE', api_status:'SUCCESS', response_key:'success_account_validation_inconclusive', data:{ beneficiary_name:null, account_status:'inconclusive', validation_type:cfg.vbaType, validation_message:msg, name_match_percentage:null } };
+      const data = { beneficiary_name:null, account_status:'inconclusive', validation_type:cfg.vbaType, validation_message:msg, name_match_percentage:null };
+      R(200, envl(txn, 'SUCCESS', 'success_account_validation_inconclusive', data), 'rp', 'account_status inconclusive');
+      st.steps.VBA = { ...base, status:'INCONCLUSIVE', api_status:'SUCCESS', response_key:'success_account_validation_inconclusive', data };
       recordAttempt('VBA', ref, inputMasked, 'INCONCLUSIVE', 'success_account_validation_inconclusive'); setProg('VBA', 'fail');
       endResult('INCONCLUSIVE', 'VBA', { b:'Bank account details', s:'could not be verified.' }); return false;
     }
-    if (o === 'vba_nre'){
-      log('API', `${url} → <span class="rp">account_status NRE</span>`, body);
-      st.steps.VBA = { ...base, status:'NRE', api_status:'SUCCESS', response_key:'success_account_validation_successful', data:{ beneficiary_name:null, account_status:'NRE', validation_type:cfg.vbaType, validation_message:'Account is valid, but it is an NRE account.', name_match_percentage:null, bank_reference_number:'VRFTGQFHMROV' } };
+    if (m.vba === 'nre'){
+      const data = { beneficiary_name:null, account_status:'NRE', validation_type:cfg.vbaType, validation_message:'Account is valid, but it is an NRE account.', name_match_percentage:null, bank_reference_number:'VRFTGQFHMROV' };
+      R(200, envl(txn, 'SUCCESS', 'success_account_validation_successful', data), 'rp', 'account_status NRE');
+      st.steps.VBA = { ...base, status:'NRE', api_status:'SUCCESS', response_key:'success_account_validation_successful', data };
       recordAttempt('VBA', ref, inputMasked, 'NRE', 'success_account_validation_successful'); setProg('VBA', 'done');
       endResult('NRE'); return false;
     }
-    const ben = o === 'names_differ' && st.j === 'VP_VBA' ? 'ADITI S SHARMA' : CUST.name;
+    const ben = m.vba_name;
     const pct = cfg.vbaNM ? sim(src.name, ben) : null;
-    log('API', `${url} → <span class="rs">200 account_status valid</span>`, body + `\n→ beneficiary_name ${ben}` + (pct != null ? ` · name_match_percentage ${pct}` : '') + ' · bank_reference_number VRFTGQFHMROV');
-    st.steps.VBA = { ...base, status:'VALID', api_status:'SUCCESS', response_key:'success_account_validation_successful', data:{ beneficiary_name:ben, account_status:'valid', validation_type:cfg.vbaType, validation_message:'Account is valid', name_match_percentage:pct, bank_reference_number:'VRFTGQFHMROV' } };
+    const data = { beneficiary_name:ben, account_status:'valid', validation_type:cfg.vbaType, validation_message:'Account is valid', name_match_percentage:pct, bank_reference_number:'VRFTGQFHMROV' };
+    R(200, envl(txn, 'SUCCESS', 'success_account_validation_successful', data, 'Account validation successful'), 'rs', '200 account_status valid');
+    st.steps.VBA = { ...base, status:'VALID', api_status:'SUCCESS', response_key:'success_account_validation_successful', data };
     recordAttempt('VBA', ref, inputMasked, 'VALID', 'success_account_validation_successful');
     setProg('VBA', 'done'); await sl(400); return true;
   }
@@ -1403,12 +1625,13 @@ const retry = guard(async function(){
   await runFrom(step);
 });
 function fire(cb, res, err){
-  st.last = { cb, res, err };
+  st.last = { cb, res, err }; st.cbs.push({ cb, res, err, at:(Date.now()-st.t0)/1000 }); renderCbs();
   const s = res ? res.status : '';
   log('CALLBACK', `<b>${cb}</b>(${cb === 'onError' ? `<span class="rf">${err.code}</span>, result` : `result · <span class="${s === 'VERIFIED' ? 'rs' : s === 'NOT_VERIFIED' || s === 'ERROR' ? 'rf' : 'rp'}">${s}</span>`})${res && res.retry_available ? ' · retry_available true' : ''}`);
   renderRes();
 }
 function closeSdk(how){
+  if (how !== 'cancel') st.cbs.push({ cb:'onDismiss', res:null, err:null, at:(Date.now()-st.t0)/1000, how });
   $('#scr').classList.remove('ho');
   if (how !== 'cancel'){ log('CALLBACK', `<b>onDismiss</b>() · ${how}`); }
   st.run++; closeOverlays(); $('#handoff').classList.remove('on');
@@ -1463,11 +1686,11 @@ function makeResult(status, failed, error){
   }
   const retryAvail = status === 'ERROR' ? !!(error && error.retryable) : ['NOT_VERIFIED','INCONCLUSIVE'].includes(status) ? (st.final ? canModify() : false) : false;
   return {
-    journey_id:st.jid, journey_type:st.j, base_reference_id:BASE, status,
+    journey_id:st.jid, journey_type:st.j, base_reference_id:st.base, status,
     failed_step: ['VERIFIED','NRE','CANCELLED'].includes(status) ? null : failed,
     retry_available:retryAvail, attempt:st.attempt,
     started_at:ist(st.startedAt || now), completed_at:ist(now),
-    environment:'PRODUCTION', sdk_version:'1.0.0', platform: st.os === 'ios' ? 'IOS' : 'ANDROID',
+    environment:st.env, sdk_version:'1.0.0', platform: st.os === 'ios' ? 'IOS' : 'ANDROID',
     steps, account, cross_checks: J().steps.length > 1 ? cc : [], attempts: J().entry ? st.attempts : [],
     consent:{ captured_at: st.consentAt ? ist(st.consentAt) : null, text_version: st.j.toLowerCase() + '_v1', terms_url:'https://merchant.example/terms' },
     ui:{ data_entry_mode: J().entry ? cfg.mode : null, fields_edited:st.edited, upi_app_used:st.app, cancelled_at: status === 'CANCELLED' ? (st.cancelledAt || st.screen) : null },
@@ -1479,18 +1702,22 @@ function makeResult(status, failed, error){
    ACTIONS
    ============================================================ */
 function launch(){
+  if (st.mode === 'dev'){ const v = devApply(); if (!v) return; }
   freshRun(); clearLog(); st.startedAt = new Date();
   const j = J();
-  log('SDK', `startJourney(<b>${st.j}</b>) · base_reference_id ${BASE}`, 'Request validated against the StartJourneyRequest schema before any screen opens');
-  if (j.entry && cfg.mode === 'SKIP' && cfg.prefill === 'empty'){
-    st.hostNote = j.entry === 'vp' ? 'SKIP mode needs prefill.upi_vpa' + (cfg.vpNM ? ' and prefill.customer_name' : '') + '. No screen opened and no API was called.' : 'SKIP mode needs prefill.account_number and prefill.ifsc' + (cfg.vbaNM ? ' and prefill.name' : '') + '. No screen opened and no API was called.';
+  log('SDK', `startJourney(<b>${st.j}</b>) · base_reference_id ${esc(st.base)}`, 'Request validated against the StartJourneyRequest schema before any screen opens');
+  const v = validateRequest(st.req);
+  v.warnings.forEach(w => log('WARN', esc(w)));
+  if (v.errors.length){
+    st.hostNote = v.errors.map(e => e.path + ': ' + e.msg).join(' · ') + '. No screen opened and no API was called.';
     log('CALLBACK', `<b>onError</b>(<span class="rf">INVALID_CONFIG</span>, null)`, st.hostNote);
-    st.last = { cb:'onError', res:null, err:{ code:'INVALID_CONFIG', step:null, message:st.hostNote, retryable:false } };
-    renderRes(); renderHost(); flowbar(); caption(); return;
+    const err = { code:'INVALID_CONFIG', step:null, message:st.hostNote, retryable:false };
+    st.last = { cb:'onError', res:null, err }; st.cbs.push({ cb:'onError', res:null, err, at:0 });
+    renderRes(); renderCbs(); renderHost(); flowbar(); caption(); return;
   }
   go(j.entry ? 'entry' : 'consent');
 }
-function restart(){ freshRun(); clearLog(); closeOverlays(); $('#handoff').classList.remove('on'); $('#sdk').classList.remove('open'); st.sdkOpen = false; paintBars(); renderHost(); renderSdk(); flowbar(); caption(); renderSpec(); renderReq(); renderRes(); $('#btnFill').hidden = true; log('SDK', `Ready · ${st.j} · outcome: ${(OUT.find(o => o.id === st.out) || {}).l}`); }
+function restart(){ freshRun(); clearLog(); closeOverlays(); $('#handoff').classList.remove('on'); $('#sdk').classList.remove('open'); st.sdkOpen = false; paintBars(); renderHost(); renderSdk(); flowbar(); caption(); renderSpec(); renderReq(); renderRes(); $('#btnFill').hidden = true; log('SDK', st.mode === 'dev' ? `Ready · ${st.j} · Developer mode · request and mocks from the left panel` : `Ready · ${st.j} · outcome: ${(OUT.find(o => o.id === st.out) || {}).l}`); renderNet(); renderCbs(); renderState(); renderScreens(); }
 function submitEntry(){
   st.showAll = true; const v = paintEntry(); if (!v.ok) return;
   st.consentAt = new Date();
@@ -1570,7 +1797,7 @@ function hl(json){
   });
 }
 function requestJson(){
-  const j = J(), r = { journey_type:st.j, base_reference_id:BASE };
+  const j = J(), r = { journey_type:st.j, base_reference_id:st.base };
   if (j.entry){
     r.data_entry_mode = cfg.mode;
     if (cfg.prefill !== 'empty'){
@@ -1583,26 +1810,27 @@ function requestJson(){
   if (has('RPD')) r.rpd = { expiry_minutes:cfg.expiry };
   if (has('VP')) r.vp = { perform_name_match:cfg.vpNM };
   if (has('VBA')) r.vba = { validation_type:cfg.vbaType, perform_name_match:cfg.vbaNM };
-  if (cfg.xob && (has('RPD') || has('VP'))) r.x_on_behalf_of = 'SUBMERCHANT01';
+  if (cfg.xob && (has('RPD') || has('VP'))) r.x_on_behalf_of = st.xobVal || 'SUBMERCHANT01';
   r.auto_close_seconds = cfg.autoClose;
   return r;
 }
 function themeSnippet(){
-  const P = PRESETS[st.th.preset], pal = { ...P.light }, dk = P.dark;
-  if (st.th.primary) pal.primary = st.th.primary;
-  const bs = st.th.btnStyle || P.btnStyle, bc = st.th.btnCase || P.btnCase;
-  return { pal, dk, bs, bc, P };
+  const T = effTheme(), P = T.P, light = { ...P.light, ...(st.th.primary ? { primary:st.th.primary } : {}) };
+  if (st.tov) PALETTE_KEYS.forEach(k => { if (st.tov[k]) light[k] = st.tov[k]; });
+  return { pal:light, dk:P.dark, bs:T.bs, bc:T.bc, P:{ ...P, header:T.header, btnR:T.btnR, btnH:T.btnH, inR:T.inR, cardR:T.cardR, inStyle:T.inStyle } };
 }
 function renderReq(){
   const T = themeSnippet(), P = T.P, ios = st.os === 'ios';
-  const req = JSON.stringify(requestJson(), null, 2);
+  let reqObj = requestJson();
+  if (st.mode === 'dev'){ try { reqObj = JSON.parse($('#reqEd').value); } catch(e){ reqObj = st.req || reqObj; } }
+  const req = JSON.stringify(reqObj, null, 2);
   const kotlin = `DecentroVerification.initialize(
     context = applicationContext,
     config = SdkConfig(
-        environment = Environment.PRODUCTION,
+        environment = Environment.${st.env},
         consumerUrns = ConsumerUrns(
-            decfin = "DECFINURN123",     // RPD and VerifyPay
-            decentro = "DECENTROURN456"  // VBA
+            decfin = "${st.urn.decfin}",     // RPD and VerifyPay
+            decentro = "${st.urn.decentro}"  // VBA
         ),
         tokenProvider = { set -> myBackend.fetchToken(set) },
         theme = Theme(
@@ -1646,17 +1874,39 @@ DecentroVerification.startJourney(from: viewController, request: request, delega
   if (has('RPD')) routes.push(['RPD Intent','api.decentro.tech','Decfin','Sent if provided'],['GTS Basic (poll)','api.decentro.tech','Decfin','Not sent']);
   if (has('VP')) routes.push(['VerifyPay','api.decentro.tech','Decfin','Sent if provided'],['GTS Verify (only on PENDING)','api.decentro.tech','Decfin','Not sent']);
   if (has('VBA')) routes.push(['Validate Bank Account','in.decentro.tech','Decentro','Never']);
-  const refs = steps.map(p => `${BASE}${p}1`).join(', ');
+  const refs = steps.map(p => `${st.base}${p}1`).join(', ');
   $('#tp-req').innerHTML = `
     <div class="codehd"><b>1 · initialize</b><small>Once per app session · ${ios ? 'Swift (planned)' : 'Kotlin'}</small></div>
     <pre class="code">${esc(ios ? swift : kotlin)}</pre>
     <div class="codehd"><b>2 · startJourney request</b><button class="tbtn" type="button" id="copyReq">${svg('copy')}Copy JSON</button></div>
     <pre class="code" id="reqPre">${hl(req)}</pre>
+    ${st.mode === 'dev' ? `<div class="codehd"><b>3 · Handle the result</b><small>${ios ? 'Swift (planned)' : 'Kotlin'}</small></div><pre class="code">${esc(ios ? `func onResult(_ r: VerificationResult) {
+    switch r.status {
+    case .verified:     confirmOnBackend(r) // then unlock payouts
+    case .notVerified:  showRetryOrAlternative(failedStep: r.failedStep)
+    case .inconclusive: sendToManualReview(r)
+    case .nre:          applyNrePolicy(r.account)
+    case .pending:      pollYourBackend(r.steps)
+    default: break
+    }
+}` : `override fun onResult(result: VerificationResult) {
+    // Fires before the result screen renders, and after every attempt in entry journeys.
+    when (result.status) {
+        Status.VERIFIED     -> backend.confirm(result)      // then unlock payouts
+        Status.NOT_VERIFIED -> if (!result.retryAvailable) showAlternative(result.failedStep)
+        Status.INCONCLUSIVE -> backend.manualReview(result)
+        Status.NRE          -> applyNrePolicy(result.account)
+        Status.PENDING      -> backend.trackPending(result.steps)   // VP still pending
+        else -> Unit
+    }
+}
+override fun onDismiss() { navigateToNextScreen() }        // last result is final`)}</pre>
+    <div class="codehd"><b>4 · Merchant backend</b><small>Node · illustrative</small></div><pre class="code">${esc(backendSnippets())}</pre>` : ''}
     <div class="spec">
       <div class="lbl">Calls in this journey</div>
       <table><tr><th>Call</th><th>Host</th><th>Token</th><th>x_on_behalf_of</th></tr>${routes.map(r => `<tr><td>${r[0]}</td><td><code>${r[1]}</code></td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join('')}</table>
       <div class="lbl">Reference IDs</div>
-      <p class="pur">One base ID from the merchant (alphanumeric, 5–45 chars). The SDK appends step and attempt: <code>${refs}</code>. Retries and Modify details increment the number, e.g. <code>${BASE}${steps[steps.length-1]}2</code>.</p>
+      <p class="pur">One base ID from the merchant (alphanumeric, 5–45 chars). The SDK appends step and attempt: <code>${refs}</code>. Retries and Modify details increment the number, e.g. <code>${st.base}${steps[steps.length-1]}2</code>.</p>
       <div class="lbl">Callbacks</div>
       <table><tr><th>Callback</th><th>When</th></tr>
         <tr><td>onResult</td><td>Final outcome known, before the result screen renders. In entry journeys it also fires after every attempt.</td></tr>
@@ -1735,6 +1985,525 @@ function renderSpec(){
     <div class="lbl">Fixed by Decentro</div><p class="pur">Screen order and layout, consent wording, the "Powered by Decentro" footer and on-screen masking of account numbers. Everything else follows the merchant theme.</p>`;
 }
 
+
+/* ============================================================
+   DEVELOPER MODE
+   Request editor (validated against the StartJourneyRequest schema, §5.3.2),
+   mock server, network inspector, callbacks, state, screen gallery, inspector.
+   ============================================================ */
+function pfFromDemo(){
+  if (cfg.prefill === 'empty') return {};
+  const ed = cfg.prefill !== 'locked';
+  return { upi_vpa:{ value:CUST.vpa, editable:ed }, customer_name:{ value:CUST.typed, editable:ed }, name:{ value:CUST.typed, editable:ed }, account_number:{ value:CUST.acct, editable:ed }, ifsc:{ value:CUST.ifsc, editable:ed } };
+}
+function applyDemo(){
+  st.base = BASE; st.xobVal = cfg.xob ? 'SUBMERCHANT01' : null; st.tov = null;
+  st.pf = pfFromDemo();
+  if (cfg.mode === 'SKIP') Object.values(st.pf).forEach(f => f.editable = false);
+  st.req = requestJson();
+}
+
+/* ---------- schema validation ---------- */
+const RX = { base:/^[A-Za-z0-9]{5,45}$/, vpa:/^[A-Za-z0-9._-]{2,256}@[A-Za-z0-9]{2,64}$/, name:/^[^@#$%^&*]{2,}$/, acct:/^[0-9]{9,18}$/, ifsc:/^[A-Z]{4}0[A-Z0-9]{6}$/, hex:/^#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})$/, vbaPurpose:/^[A-Za-z0-9 ]{5,255}$/ };
+const TOP_KEYS = ['journey_type','base_reference_id','data_entry_mode','prefill','rpd','vp','vba','x_on_behalf_of','theme_override','auto_close_seconds'];
+const THEME_KEYS = [...PALETTE_KEYS,'logo','header_title','dark_palette','font_family','title_size','body_size','caption_size','button_style','button_corner_radius','button_height','button_text_case','input_style','input_corner_radius','input_fill','input_border_focused','card_corner_radius','strings','auto_close_seconds'];
+const PF_RULE = { upi_vpa:[RX.vpa,'must look like name@handle'], customer_name:[RX.name,'2+ characters, none of @#$%^&*'], name:[RX.name,'2+ characters, none of @#$%^&*'], account_number:[RX.acct,'must be 9–18 digits'], ifsc:[RX.ifsc,'must match ^[A-Z]{4}0[A-Z0-9]{6}$ (uppercase)'] };
+const isObj = v => v && typeof v === 'object' && !Array.isArray(v);
+function validateRequest(q){
+  const E = [], W = [], err = (p, m) => E.push({ path:p, msg:m }), warn = m => W.push(m);
+  if (!isObj(q)){ err('$', 'must be a JSON object'); return { errors:E, warnings:W }; }
+  Object.keys(q).forEach(k => { if (!TOP_KEYS.includes(k)) err(k, 'is not allowed (additionalProperties: false)'); });
+  const jt = q.journey_type, JJ = JOURNEYS[jt], steps = JJ ? JJ.steps : [];
+  if (jt === undefined) err('journey_type', 'is required'); else if (!JJ) err('journey_type', 'must be one of ' + Object.keys(JOURNEYS).join(', '));
+  if (q.base_reference_id === undefined) err('base_reference_id', 'is required');
+  else if (typeof q.base_reference_id !== 'string' || !RX.base.test(q.base_reference_id)) err('base_reference_id', 'must be alphanumeric, 5–45 characters (no hyphens)');
+  if (q.data_entry_mode !== undefined && !['COLLECT','SKIP'].includes(q.data_entry_mode)) err('data_entry_mode', 'must be COLLECT or SKIP');
+  const blk = (name, allowed, check) => {
+    const b = q[name]; if (b === undefined) return;
+    if (!isObj(b)){ err(name, 'must be an object'); return; }
+    Object.keys(b).forEach(k => { if (!allowed.includes(k)) err(name + '.' + k, 'is not allowed'); });
+    check(b);
+    if (JJ && !steps.includes(name.toUpperCase())) warn(`${name} is ignored: ${jt} has no ${name.toUpperCase()} step`);
+  };
+  blk('rpd', ['expiry_minutes'], b => { if (b.expiry_minutes !== undefined && !(Number.isInteger(b.expiry_minutes) && b.expiry_minutes >= 1 && b.expiry_minutes <= 60)) err('rpd.expiry_minutes', 'must be an integer from 1 to 60'); });
+  blk('vp', ['purpose_message','perform_name_match','fetch_branch_details'], b => {
+    if (b.purpose_message !== undefined && (typeof b.purpose_message !== 'string' || b.purpose_message.length < 4)) err('vp.purpose_message', 'must be at least 4 characters');
+    ['perform_name_match','fetch_branch_details'].forEach(k => { if (b[k] !== undefined && typeof b[k] !== 'boolean') err('vp.' + k, 'must be true or false'); });
+  });
+  blk('vba', ['validation_type','perform_name_match','purpose_message'], b => {
+    if (b.validation_type !== undefined && !['penniless','pennydrop','hybrid'].includes(b.validation_type)) err('vba.validation_type', 'must be penniless, pennydrop or hybrid');
+    if (b.perform_name_match !== undefined && typeof b.perform_name_match !== 'boolean') err('vba.perform_name_match', 'must be true or false');
+    if (b.purpose_message !== undefined && (typeof b.purpose_message !== 'string' || !RX.vbaPurpose.test(b.purpose_message))) err('vba.purpose_message', 'must be 5–255 letters, digits or spaces');
+  });
+  if (q.x_on_behalf_of !== undefined){
+    if (typeof q.x_on_behalf_of !== 'string' || !q.x_on_behalf_of.length) err('x_on_behalf_of', 'must be a non-empty string');
+    else if (JJ && !steps.includes('RPD') && !steps.includes('VP')) warn('x_on_behalf_of is never sent on VBA, so it is unused in ' + jt);
+  }
+  if (q.auto_close_seconds !== undefined && !(Number.isInteger(q.auto_close_seconds) && q.auto_close_seconds >= 0)) err('auto_close_seconds', 'must be an integer ≥ 0');
+  const accepts = !JJ ? [] : JJ.entry === 'vp' ? ['upi_vpa','customer_name'] : JJ.entry === 'vba' ? ['name','account_number','ifsc'] : [];
+  const pf = q.prefill;
+  if (pf !== undefined){
+    if (!isObj(pf)) err('prefill', 'must be an object');
+    else Object.keys(pf).forEach(k => {
+      if (!PF_RULE[k]){ err('prefill.' + k, 'is not allowed'); return; }
+      const f = pf[k];
+      if (!isObj(f)){ err('prefill.' + k, 'must be { "value": …, "editable": … }'); return; }
+      Object.keys(f).forEach(x => { if (!['value','editable'].includes(x)) err(`prefill.${k}.${x}`, 'is not allowed'); });
+      if (typeof f.value !== 'string') err(`prefill.${k}.value`, 'is required and must be a string');
+      else if (!PF_RULE[k][0].test(f.value)) err(`prefill.${k}.value`, PF_RULE[k][1]);
+      if (f.editable !== undefined && typeof f.editable !== 'boolean') err(`prefill.${k}.editable`, 'must be true or false');
+      if (JJ && !accepts.includes(k)) warn(`prefill.${k} is ignored: ${jt} does not accept it`);
+    });
+  }
+  if (q.data_entry_mode === 'SKIP' && JJ){
+    if (!JJ.entry) warn('data_entry_mode is ignored: ' + jt + ' has no entry screen');
+    const need = JJ.entry === 'vp' ? ['upi_vpa', ...(q.vp?.perform_name_match ? ['customer_name'] : [])] : JJ.entry === 'vba' ? ['account_number','ifsc', ...(q.vba?.perform_name_match ? ['name'] : [])] : [];
+    need.forEach(k => { if (!isObj(pf) || !isObj(pf[k]) || !pf[k].value) err('prefill.' + k, 'is required when data_entry_mode is SKIP'); });
+  }
+  const t = q.theme_override;
+  if (t !== undefined){
+    if (!isObj(t)) err('theme_override', 'must be an object');
+    else Object.keys(t).forEach(k => {
+      const v = t[k], P = 'theme_override.' + k;
+      if (!THEME_KEYS.includes(k)) return err(P, 'is not a theme property');
+      if ([...PALETTE_KEYS,'input_fill','input_border_focused'].includes(k) && !(typeof v === 'string' && RX.hex.test(v))) err(P, 'must be a hex colour like #0B5FFF');
+      if (k === 'header_title' && (typeof v !== 'string' || v.length > 30)) err(P, 'must be text, max 30 characters');
+      if ((k === 'button_style' || k === 'input_style') && !['FILLED','OUTLINED'].includes(v)) err(P, 'must be FILLED or OUTLINED');
+      if (k === 'button_text_case' && !['UPPERCASE','SENTENCE'].includes(v)) err(P, 'must be UPPERCASE or SENTENCE');
+      if (k === 'button_height' && !(typeof v === 'number' && v >= 40)) err(P, 'must be a number ≥ 40 (dp)');
+      if (['button_corner_radius','input_corner_radius','card_corner_radius'].includes(k) && !(typeof v === 'number' && v >= 0)) err(P, 'must be a number ≥ 0 (dp)');
+      if (['title_size','body_size','caption_size'].includes(k) && !(typeof v === 'number' && v >= 8)) err(P, 'must be a number ≥ 8 (sp)');
+      if (k === 'dark_palette'){ if (!isObj(v)) err(P, 'must be an object'); else Object.keys(v).forEach(x => { if (!PALETTE_KEYS.includes(x)) err(P + '.' + x, 'is not a palette key'); else if (!RX.hex.test(v[x])) err(P + '.' + x, 'must be a hex colour'); }); }
+      if (['logo','font_family'].includes(k)) warn(P + ' is a native resource in the SDK; ignored in this demo');
+    });
+  }
+  return { errors:E, warnings:W };
+}
+function applyRequest(q){
+  if (!isObj(q)) return;
+  if (JOURNEYS[q.journey_type]) st.j = q.journey_type;
+  st.req = q;
+  st.base = typeof q.base_reference_id === 'string' && q.base_reference_id ? q.base_reference_id : BASE;
+  cfg.mode = q.data_entry_mode === 'SKIP' && J().entry ? 'SKIP' : 'COLLECT';
+  cfg.expiry = Number.isInteger(q.rpd?.expiry_minutes) ? Math.min(60, Math.max(1, q.rpd.expiry_minutes)) : 60;
+  cfg.vpNM = q.vp?.perform_name_match === true; cfg.vbaNM = q.vba?.perform_name_match === true;
+  cfg.vbaType = ['penniless','pennydrop','hybrid'].includes(q.vba?.validation_type) ? q.vba.validation_type : 'pennydrop';
+  st.xobVal = typeof q.x_on_behalf_of === 'string' && q.x_on_behalf_of ? q.x_on_behalf_of : null; cfg.xob = !!st.xobVal;
+  cfg.autoClose = Number.isInteger(q.auto_close_seconds) ? q.auto_close_seconds : 0;
+  const acc = J().entry === 'vp' ? ['upi_vpa','customer_name'] : J().entry === 'vba' ? ['name','account_number','ifsc'] : [];
+  st.pf = {};
+  Object.entries(isObj(q.prefill) ? q.prefill : {}).forEach(([k, f]) => { if (acc.includes(k) && isObj(f) && typeof f.value === 'string') st.pf[k] = { value:f.value, editable:f.editable !== false }; });
+  if (cfg.mode === 'SKIP') Object.values(st.pf).forEach(f => f.editable = false);
+  st.tov = isObj(q.theme_override) ? q.theme_override : null;
+}
+
+/* ---------- examples (spec §5.3.3) ---------- */
+const EXAMPLES = {
+  RPD:{ journey_type:'RPD', base_reference_id:'ORD10001', rpd:{ expiry_minutes:10 } },
+  VP:{ journey_type:'VP', base_reference_id:'ORD10002', data_entry_mode:'COLLECT', prefill:{ upi_vpa:{ value:'aditi@okhdfc', editable:true } }, vp:{ perform_name_match:true }, x_on_behalf_of:'SUBMERCHANT01' },
+  VBA:{ journey_type:'VBA', base_reference_id:'ORD10003', data_entry_mode:'SKIP', prefill:{ account_number:{ value:'50100234567890' }, ifsc:{ value:'HDFC0000123' }, name:{ value:'Aditi Sharma' } }, vba:{ validation_type:'penniless', perform_name_match:true } },
+  RPD_VP_VBA:{ journey_type:'RPD_VP_VBA', base_reference_id:'ORD10004', rpd:{ expiry_minutes:15 }, vp:{ perform_name_match:true }, x_on_behalf_of:'SUBMERCHANT01', vba:{ validation_type:'pennydrop', perform_name_match:true }, theme_override:{ primary:'#0B5FFF', button_text_case:'SENTENCE' } },
+  RPD_VP:{ journey_type:'RPD_VP', base_reference_id:'ORD10005', rpd:{ expiry_minutes:30 }, vp:{ fetch_branch_details:true } },
+  VP_VBA:{ journey_type:'VP_VBA', base_reference_id:'ORD10006', data_entry_mode:'COLLECT', prefill:{ upi_vpa:{ value:'aditi@okhdfc', editable:false }, customer_name:{ value:'Aditi Sharma', editable:true } }, vp:{ perform_name_match:true }, vba:{ validation_type:'hybrid', perform_name_match:true } },
+  RPD_VBA:{ journey_type:'RPD_VBA', base_reference_id:'ORD10007', rpd:{ expiry_minutes:15 }, vba:{ validation_type:'penniless' }, auto_close_seconds:5 },
+  BAD:{ journey_type:'VBA', base_reference_id:'ORD-10008', data_entry_mode:'SKIP', prefill:{ ifsc:{ value:'hdfc0000123' } }, vba:{ perform_name_match:true }, rpd:{ expiry_minutes:90 }, theme_override:{ primary:'blue' } }
+};
+
+/* ---------- mock server options ---------- */
+const MK = {
+  token:[['ok','Token issued'],['fail','Fails after one refresh']],
+  network:[['online','Online'],['offline_first','Offline at the first call'],['drop_while_polling','Drops while waiting for payment']],
+  apps:[[5,'5 apps'],[4,'4 apps'],[3,'3 apps'],[1,'1 app'],[0,'None installed']],
+  rpd_intent:[['success','200 success_validation_link_created'],['provider_error','502 error_provider_error, then OK']],
+  gts:[['success','SUCCESS'],['deemed_success','DEEMED, then SUCCESS'],['failed','FAILED · remitter declined'],['expired','EXPIRED · link runs out'],['success_masked','SUCCESS · account masked'],['success_no_vpa','SUCCESS · no payer_vpa'],['api_failure','FAILURE until expiry']],
+  vp:[['retrieved','success_account_details_retrieved'],['pending_then_success','PENDING, then verified'],['pending_timeout','PENDING past polling window'],...VPR.map(r => [r.k, r.k]),['masked','Retrieved · account masked'],['frequency_limit','429 frequency limit'],['provider_error','500 provider error, then OK'],['timeout','No response in 30 s, then OK']],
+  vba:[['valid','account_status valid'],['invalid','account_status invalid'],['inconclusive','account_status inconclusive'],['nre','account_status NRE'],['internal_error','500 internal error, then OK'],['insufficient_credits','400 insufficient credits']],
+  failMode:[['first','Fail the first attempt only'],['every','Fail every attempt (shows the cap)']]
+};
+function devJourney(){ try { const q = JSON.parse($('#reqEd').value); if (JOURNEYS[q.journey_type]) return q.journey_type; } catch(e){} return st.j; }
+
+/* ---------- left panel ---------- */
+function buildDevLeft(){
+  if (!st.devMock) st.devMock = { ...MOCK_DEFAULT };
+  $('#devLeft').innerHTML = `
+    <div class="seg" id="dvSeg" style="align-self:flex-start"><button type="button" data-v="req" aria-pressed="true">Request</button><button type="button" data-v="mock" aria-pressed="false">Mock server</button></div>
+    <div id="dvReq" style="display:flex;flex-direction:column;gap:10px">
+      <div class="dv-h"><b>startJourney(request)</b><small>StartJourneyRequest · §5.3.2</small></div>
+      <select class="sel" id="exSel" aria-label="Load an example request">
+        <option value="">Load an example…</option>
+        <option value="demo">Current Demo-mode settings</option>
+        ${Object.keys(JOURNEYS).map(k => `<option value="${k}">${k} · spec §5.3.3${k === 'RPD_VP_VBA' ? ' (P0)' : ''}</option>`).join('')}
+        <option value="BAD">Invalid request · shows INVALID_CONFIG</option>
+      </select>
+      <div class="ed-wrap"><div class="ed-gut" id="edGut">1</div><textarea id="reqEd" spellcheck="false" autocomplete="off" autocapitalize="off" aria-label="startJourney request JSON"></textarea></div>
+      <div class="ed-status" id="edStatus"></div>
+      <div class="ed-act"><button class="tbtn pri" id="runBtn" type="button">${svg('chev')}Run journey <span class="kbd">⌘↵</span></button><button class="tbtn" id="fmtBtn" type="button">Format</button><button class="tbtn" id="cpyBtn" type="button">${svg('copy')}Copy</button></div>
+      <details class="init"><summary>initialize(config)</summary>
+        <div class="grid">
+          <span>environment</span><div class="seg" id="envSeg"><button type="button" data-v="STAGING">STAGING</button><button type="button" data-v="PRODUCTION">PRODUCTION</button></div>
+          <span>consumer_urns.decfin</span><input id="urnDecfin" value="${esc(st.urn.decfin)}" aria-label="Decfin consumer URN">
+          <span>consumer_urns.decentro</span><input id="urnDecentro" value="${esc(st.urn.decentro)}" aria-label="Decentro consumer URN">
+          <span>token_provider</span><span class="mono" style="font-size:11px;color:var(--fg-2)">{ set -> backend.fetchToken(set) }</span>
+        </div>
+      </details>
+    </div>
+    <div id="dvMock" style="display:none;flex-direction:column;gap:10px">
+      <div class="dv-h"><b>Mock responses</b><small>Apply on the next run</small></div>
+      <div class="mk" id="mk"></div>
+      <div class="ed-act"><button class="tbtn pri" id="runBtn2" type="button">${svg('chev')}Run journey</button><button class="tbtn" id="mkReset" type="button">Reset mocks</button></div>
+    </div>`;
+  segSet('#envSeg', st.env);
+  $('#reqEd').value = JSON.stringify(st.mode === 'dev' && st.req ? st.req : requestJson(), null, 2);
+  edChanged();
+  buildMock();
+  $('#dvSeg').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; segSet('#dvSeg', b.dataset.v); $('#dvReq').style.display = b.dataset.v === 'req' ? 'flex' : 'none'; $('#dvMock').style.display = b.dataset.v === 'mock' ? 'flex' : 'none'; if (b.dataset.v === 'mock') buildMock(); });
+  const ed = $('#reqEd');
+  ed.addEventListener('input', () => { clearTimeout(st._edt); st._edt = setTimeout(edChanged, 150); });
+  ed.addEventListener('scroll', () => { $('#edGut').scrollTop = ed.scrollTop; });
+  ed.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)){ e.preventDefault(); launch(); return; }
+    if (e.key === 'Tab'){ e.preventDefault(); const s = ed.selectionStart; ed.setRangeText('  ', s, ed.selectionEnd, 'end'); edChanged(); }
+  });
+  $('#exSel').addEventListener('change', e => {
+    const v = e.target.value; if (!v) return;
+    const q = v === 'demo' ? (() => { const sv = snapDemo(); restoreDemo(st.demoSnap); applyDemo(); const r = requestJson(); restoreDemo(sv); return r; })() : EXAMPLES[v];
+    ed.value = JSON.stringify(q, null, 2); edChanged(); e.target.value = '';
+  });
+  $('#runBtn').addEventListener('click', launch); $('#runBtn2').addEventListener('click', launch);
+  $('#fmtBtn').addEventListener('click', () => { try { ed.value = JSON.stringify(JSON.parse(ed.value), null, 2); edChanged(); } catch(e){} });
+  $('#cpyBtn').addEventListener('click', () => copyText(ed.value, $('#cpyBtn')));
+  $('#envSeg').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; st.env = b.dataset.v; segSet('#envSeg', st.env); });
+  $('#urnDecfin').addEventListener('change', e => st.urn.decfin = e.target.value.trim() || 'DECFINURN123');
+  $('#urnDecentro').addEventListener('change', e => st.urn.decentro = e.target.value.trim() || 'DECENTROURN456');
+  $('#mkReset').addEventListener('click', () => { st.devMock = { ...MOCK_DEFAULT }; buildMock(); });
+}
+function edChanged(){
+  const ed = $('#reqEd'), n = ed.value.split('\n').length;
+  $('#edGut').textContent = Array.from({ length:n }, (_, i) => i + 1).join('\n');
+  const s = $('#edStatus');
+  let q;
+  try { q = JSON.parse(ed.value); }
+  catch(e){ s.className = 'ed-status bad'; s.innerHTML = `<b>Not valid JSON</b><span>${esc(e.message)}</span>`; return null; }
+  const v = validateRequest(q);
+  if (v.errors.length){ s.className = 'ed-status bad'; s.innerHTML = `<b>${v.errors.length} schema error${v.errors.length > 1 ? 's' : ''} · Run fires onError(INVALID_CONFIG)</b>` + v.errors.map(x => `<span><code>${esc(x.path)}</code> ${esc(x.msg)}</span>`).join('') + v.warnings.map(w => `<span class="w">${esc(w)}</span>`).join(''); }
+  else { s.className = 'ed-status ok'; s.innerHTML = `<b>Valid StartJourneyRequest · ${q.journey_type}</b>` + (v.warnings.length ? v.warnings.map(w => `<span class="w">${esc(w)}</span>`).join('') : '<span>Every omitted field takes its default.</span>'); }
+  if ($('#dvMock') && $('#dvMock').style.display !== 'none') buildMock();
+  return q;
+}
+function devApply(){
+  const ed = $('#reqEd'); let q;
+  try { q = JSON.parse(ed.value); } catch(e){ edChanged(); toast('Fix the JSON before running'); return false; }
+  applyRequest(q); theme(); syncControls(); buildTabsCounts();
+  return true;
+}
+function buildMock(){
+  const m = st.devMock, jt = devJourney(), S = JOURNEYS[jt].steps;
+  const sel = (k, label) => `<label class="mk-r"><span>${label}</span><select data-mk="${k}">${MK[k].map(([v, l]) => `<option value="${v}" ${String(v) === String(m[k]) ? 'selected' : ''}>${esc(l)}</option>`).join('')}</select></label>`;
+  const txt = (k, label) => `<label class="mk-r"><span>${label}</span><input data-mk="${k}" value="${esc(m[k])}" spellcheck="false"></label>`;
+  let h = `<div class="mk-g"><h4>SDK and device</h4>${sel('token','tokenProvider')}${sel('network','Network')}${S.includes('RPD') ? sel('apps','UPI apps') : ''}</div>`;
+  if (S.includes('RPD')) h += `<div class="mk-g"><h4>RPD <code>/v3/payments/rpd/intent · GTS Basic</code></h4>${sel('rpd_intent','RPD Intent')}${sel('gts','GTS Basic')}${txt('payer_name','payer_name')}</div>`;
+  if (S.includes('VP')) h += `<div class="mk-g"><h4>VerifyPay <code>/v3/banking/verify_pay</code></h4>${sel('vp','Response')}${txt('vp_name','name_as_per_bank')}</div>`;
+  if (S.includes('VBA')) h += `<div class="mk-g"><h4>VBA <code>/v3/banking/money_transfer/validate_bank_account</code></h4>${sel('vba','Response')}${txt('vba_name','beneficiary_name')}</div>`;
+  if (JOURNEYS[jt].entry) h += `<div class="mk-g"><h4>Modify details</h4>${sel('failMode','Failures')}</div>`;
+  $('#mk').innerHTML = h;
+  $('#mk').querySelectorAll('[data-mk]').forEach(el => el.addEventListener('change', () => { const k = el.dataset.mk; m[k] = k === 'apps' ? +el.value : el.value; }));
+}
+
+/* ---------- mode ---------- */
+const snapDemo = () => ({ j:st.j, cfg:{ ...cfg } });
+const restoreDemo = s => { if (!s) return; st.j = s.j; Object.assign(cfg, s.cfg); };
+function setMode(m){
+  if (m === st.mode) return;
+  if (m === 'dev'){ st.demoSnap = snapDemo(); applyDemo(); st.mode = 'dev'; buildDevLeft(); }
+  else { st.mode = 'demo'; st.tov = null; restoreDemo(st.demoSnap); setInspect(false); }
+  document.body.classList.toggle('devmode', st.mode === 'dev');
+  segSet('#modeSeg', st.mode);
+  try { history.replaceState(null, '', st.mode === 'dev' ? '#dev' : location.pathname + location.search); } catch(e){}
+  syncControls(); theme(); buildTabs(); restart(); fit();
+  $('#btnCtl').lastChild.textContent = st.mode === 'dev' ? 'Request' : 'Journey';
+}
+
+/* ---------- tabs ---------- */
+const TABS = {
+  demo:[['log','Events','logCt'],['req','Integration'],['res','Result object'],['spec','Screen spec']],
+  dev:[['net','Network','netCt'],['cbs','Callbacks','cbCt'],['state','State'],['scr','Screens'],['req','Code'],['spec','Spec'],['log','Log','logCt']]
+};
+function buildTabs(){
+  const T = TABS[st.mode];
+  if (!T.find(t => t[0] === st.tab)) st.tab = T[0][0];
+  $('#tabs').innerHTML = T.map(([k, l, c]) => `<button class="tab" role="tab" type="button" data-tab="${k}" aria-selected="${k === st.tab}">${l}${c ? `<span class="ct" id="${c}">0</span>` : ''}</button>`).join('');
+  $('#tabs').style.overflowX = 'auto';
+  showTab(st.tab); buildTabsCounts();
+}
+function buildTabsCounts(){
+  const s = (id, v) => { const el = $('#' + id); if (el) el.textContent = v; };
+  s('logCt', st.logN); s('netCt', (st.net || []).length); s('cbCt', (st.cbs || []).length);
+}
+function showTab(k){
+  st.tab = k;
+  document.querySelectorAll('#tabs .tab').forEach(x => x.setAttribute('aria-selected', x.dataset.tab === k));
+  ['log','req','res','spec','net','cbs','state','scr'].forEach(t => $('#tp-' + t).hidden = t !== k);
+  ({ net:renderNet, cbs:renderCbs, state:renderState, scr:renderScreens, req:renderReq, spec:renderSpec, res:renderRes }[k] || (() => {}))();
+}
+
+/* ---------- network ---------- */
+function curlOf(e){
+  const url = 'https://' + e.host + e.path;
+  let c = `curl -X ${e.method} '${url}'`;
+  Object.entries(e.headers).forEach(([k, v]) => c += ` \\\n  -H '${k}: ${v}'`);
+  if (e.body) c += ` \\\n  -d '${JSON.stringify(e.body)}'`;
+  return c;
+}
+function renderNet(){
+  buildTabsCounts();
+  const el = $('#tp-net'); if (!el || el.hidden) return;
+  const list = (st.net || []).filter(e => !(st.hidePolls && e.kind === 'POLL'));
+  const scrolled = el.scrollTop + el.clientHeight >= el.scrollHeight - 30;
+  el.innerHTML = `<div class="nt-bar"><span>${st.net.length} request${st.net.length === 1 ? '' : 's'} · ${st.polls ? st.polls.gts + st.polls.gtv : 0} status polls</span><label><input type="checkbox" id="hidePolls" ${st.hidePolls ? 'checked' : ''}> Hide polls</label></div>` +
+    (list.length ? list.map(e => {
+      const on = st.netOpen === e.id;
+      return `<button class="nr ${on ? 'on' : ''}" data-net="${e.id}" type="button"><span class="mt">${e.method}</span><span class="pt">${esc(e.path.split('?')[0])}<small>${e.label ? esc(e.label) + ' · ' : ''}${esc(e.host)}${e.ref ? ' · ' + esc(e.ref) : ''}</small></span><span class="sc s${String(e.http)[0]}">${e.http}</span><span class="du">${e.ms} ms</span></button>` +
+        (on ? `<div class="nd">
+          <div class="kv"><span>URL</span><b>https://${esc(e.host + e.path)}</b><span>Token set</span><b>${e.set} · ${e.set === 'DECFIN' ? 'RPD, VP, status APIs' : 'VBA only'}</b><span>Step</span><b>${e.step}${e.ref ? ' · ' + esc(e.ref) : ''}</b><span>At</span><b>+${fmtT(e.at)}</b></div>
+          <div class="lbl">Request headers</div><pre class="code">${hl(JSON.stringify(e.headers, null, 2))}</pre>
+          ${e.body ? `<div class="lbl">Request body</div><pre class="code">${hl(JSON.stringify(e.body, null, 2))}</pre>` : ''}
+          <div class="lbl">Response · HTTP ${e.http}<button class="tbtn xs" type="button" data-curl="${e.id}">${svg('copy')}Copy as cURL</button></div><pre class="code">${hl(JSON.stringify(e.res, null, 2))}</pre>
+        </div>` : '');
+    }).join('') : `<p class="empty">No requests yet. Run the journey and every call to Decentro shows here with its headers and bodies.</p>`) +
+    `<p class="empty" style="font-size:11px">Response shapes are illustrative and use the field names in the SDK spec. Confirm exact envelopes against Decentro's API reference.</p>`;
+  if (scrolled && !st.netOpen) el.scrollTop = el.scrollHeight;
+}
+
+/* ---------- callbacks ---------- */
+function renderCbs(){
+  buildTabsCounts();
+  const el = $('#tp-cbs'); if (!el || el.hidden) return;
+  const L = st.cbs || [];
+  el.innerHTML = L.length ? L.map((c, i) => {
+    const s = c.res ? c.res.status : c.err ? c.err.code : '';
+    const tone = s === 'VERIFIED' ? 'ok' : ['NOT_VERIFIED','ERROR','INVALID_CONFIG'].includes(s) || c.cb === 'onError' ? 'bad' : s ? 'wn' : 'nt';
+    const payload = c.cb === 'onError' ? { error:c.err, result:c.res } : c.cb === 'onDismiss' ? null : c.res;
+    return `<details class="cb" ${i === L.length - 1 ? 'open' : ''}><summary><span class="badge nt mono">${c.cb}</span>${s ? `<span class="badge ${tone}">${s}</span>` : `<span class="pill">${esc(c.how || '')}</span>`}<span class="t">+${fmtT(c.at || 0)}</span></summary>${payload ? `<pre class="code">${hl(JSON.stringify(payload, null, 2))}</pre>` : '<pre class="code">// no payload · the SDK UI has closed</pre>'}</details>`;
+  }).join('') : `<p class="empty">No callbacks yet. onResult fires the moment an outcome is known, before the result screen renders; onDismiss fires when the screen closes.</p>`;
+}
+
+/* ---------- state ---------- */
+function schedState(){ if (st._ss) return; st._ss = requestAnimationFrame(() => { st._ss = 0; renderState(); buildTabsCounts(); }); }
+function renderState(){
+  const el = $('#tp-state'); if (!el || el.hidden) return;
+  const tone = s => ['SUCCESS','VERIFIED','VALID'].includes(s) ? 'ok' : ['FAILED','EXPIRED','NOT_VERIFIED','INVALID','ERROR'].includes(s) ? 'bad' : ['PENDING','INCONCLUSIVE','NRE'].includes(s) ? 'wn' : '';
+  const refs = (st.net || []).filter(e => e.ref && e.method === 'POST');
+  const tok = set => { const t = st.tokens?.[set]; return t ? `<span class="pill ok">cached</span> expires in <b class="mono">${mmss(t.exp - Date.now())}</b>` : '<span class="pill">not fetched</span>'; };
+  const rem = st.expiryEnd ? st.expiryEnd - Date.now() - st.ff : 0;
+  el.innerHTML = `
+    <div class="lbl">Journey</div>
+    <table class="stt"><tr><td>journey_id</td><td><code>${st.jid}</code></td></tr><tr><td>journey_type</td><td>${st.j}</td></tr><tr><td>base_reference_id</td><td><code>${esc(st.base)}</code></td></tr>
+      <tr><td>Screen</td><td>${st.sdkOpen ? screenTitle(st.screen) : 'SDK closed (merchant app)'}${st.overlay && ($('#dlg').classList.contains('on') || $('#sheet').classList.contains('on')) ? ' + ' + st.overlay : ''}</td></tr>
+      <tr><td>Attempt</td><td>${st.attempt} of 3${J().entry ? '' : ' · no entry screen'}</td></tr>
+      <tr><td>Consent</td><td>${st.consentAt ? ist(st.consentAt) : '—'}</td></tr>
+      <tr><td>data_entry_mode</td><td>${J().entry ? cfg.mode : 'n/a'}</td></tr></table>
+    <div class="lbl">Steps</div>
+    <table class="stt"><tr><th>Step</th><th>Status</th><th>reference_id</th><th>Retries</th></tr>${J().steps.map(p => { const s = st.steps?.[p]; return `<tr><td>${p}</td><td><span class="pill ${tone(s?.status)}">${s ? s.status : 'NOT_RUN'}</span></td><td><code>${s?.reference_id || '—'}</code></td><td>${s ? s.error_retries : 0}</td></tr>`; }).join('')}</table>
+    <div class="lbl">Reference IDs issued</div>
+    <table class="stt">${refs.length ? refs.map(e => `<tr><td><code>${esc(e.ref)}</code></td><td>${e.step}</td><td><span class="pill ${e.http < 300 ? 'ok' : 'bad'}">HTTP ${e.http}</span></td></tr>`).join('') : '<tr><td colspan="3">None yet. The SDK appends {step}{n} to the base ID per call.</td></tr>'}</table>
+    <div class="lbl">Tokens</div>
+    <table class="stt"><tr><td>DECFIN</td><td>${tok('DECFIN')}</td></tr><tr><td>DECENTRO</td><td>${tok('DECENTRO')}</td></tr></table>
+    <div class="lbl">Polling</div>
+    <table class="stt"><tr><td>GTS Basic</td><td>${st.polls?.gts || 0} polls</td></tr><tr><td>GTS Verify</td><td>${st.polls?.gtv || 0} polls</td></tr><tr><td>Payment link</td><td>${st.expiryEnd ? (rem > 0 ? 'expires in ' + mmss(rem) : 'expired') : '—'}</td></tr></table>
+    <div class="lbl">Active mocks</div>
+    <table class="stt">${Object.entries(M()).map(([k, v]) => `<tr><td>${k}</td><td><code>${esc(String(v))}</code></td></tr>`).join('')}</table>`;
+}
+setInterval(() => { if (st.mode === 'dev' && st.tab === 'state') renderState(); }, 1000);
+
+/* ---------- screen gallery ---------- */
+function pvList(){
+  const j = J(), L = [], add = (g, id, l, t) => L.push({ g, id, l, t });
+  if (j.entry){ add('Entry','entry','As configured'); add('Entry','entry-err','Validation errors','bad'); add('Entry','entry-skip','SKIP mode'); add('Entry','entry-lock','Fields locked'); add('Entry','entry-a2','Attempt 2 of 3'); }
+  else { add('Payment','consent','Consent'); add('Payment','apps','Choose UPI app'); add('Payment','sheet','Other UPI apps'); add('Payment','awaiting','Awaiting payment'); add('Payment','awaiting-net','Waiting for network','wn'); add('Payment','dialog','Cancel dialog'); }
+  if (j.steps.length > 1){ add('Progress','verifying','Verifying'); if (has('VP')) add('Progress','verifying-pend','VP pending','wn'); }
+  else if (j.entry) add('Progress','processing','Processing');
+  add('Results','r-verified','Verified','ok');
+  if (has('RPD')){ add('Results','r-declined','Payment declined','bad'); add('Results','r-expired','Link expired','bad'); }
+  if (has('VP')){ add('Results','r-vpfail','UPI ID not verified','bad'); add('Results','r-pending','Pending','wn'); }
+  if (has('VBA')){ add('Results','r-invalid','Account invalid','bad'); add('Results','r-inconc','Inconclusive','wn'); add('Results','r-nre','NRE account','wn'); }
+  if (j.entry) add('Results','r-modify','Modify details offered','bad');
+  const errs = ['offline','session'];
+  if (has('RPD')) errs.push('link','noapp','unconfirmed','missing');
+  if (has('VP')) errs.push('vp','vp_timeout','velocity');
+  if (has('VBA')) errs.push('vba','unavail');
+  if (has('VBA') && j.steps.length > 1) errs.push('masked');
+  errs.forEach(k => { const d = errDef(k, j.steps[0]); add('Errors', 'e-' + k, d.code + (d.retry ? ' · Retry' : ''), 'bad'); });
+  return L;
+}
+function renderScreens(){
+  const el = $('#tp-scr'); if (!el || el.hidden) return;
+  const L = pvList(), G = [...new Set(L.map(x => x.g))];
+  el.innerHTML = `<p class="pur" style="margin:0 0 10px;color:var(--fg-2)">Jump to any screen state in ${st.j}. Previews use sample data and fire no callbacks. Restart runs the journey live.</p>` +
+    G.map(g => `<div class="pvg"><h5>${g}</h5><div class="l">${L.filter(x => x.g === g).map(x => `<button class="pvb ${st.pv === x.id ? 'on' : ''}" type="button" data-pv="${x.id}"><i class="${x.t || ''}"></i><span>${esc(x.l)}</span></button>`).join('')}</div></div>`).join('');
+}
+function fakeStep(p, s){
+  const base = { product:p, status:s, reference_id:st.base + p + '1', decentro_txn_id:hex32(), api_status:'SUCCESS', response_key:'', error_retries:0, is_masked:false, data:{} };
+  if (p === 'RPD' && s === 'SUCCESS') base.data = { payer_vpa:CUST.vpa, payer_name:CUST.name, payer_account_number:CUST.acct, payer_account_ifsc:CUST.ifsc, payer_account_type:CUST.type, upi_app_used:'PhonePe' };
+  if (p === 'VP'){ base.data = { upi_vpa:st.form.vpa || CUST.vpa }; if (s === 'VERIFIED') Object.assign(base.data, { name_as_per_bank:CUST.name, account_number:CUST.acct, ifsc:CUST.ifsc, account_type:CUST.type, name_match_score: cfg.vpNM ? 100 : null }); }
+  if (p === 'VBA'){
+    if (s === 'VALID') base.data = { beneficiary_name:CUST.name, account_status:'valid', name_match_percentage: cfg.vbaNM ? 100 : null, bank_reference_number:'VRFTGQFHMROV' };
+    if (s === 'NRE') base.data = { beneficiary_name:null, account_status:'NRE' };
+  }
+  return base;
+}
+function preview(id){
+  freshRun(); closeOverlays(); $('#handoff').classList.remove('on'); $('#scr').classList.remove('ho');
+  st.sdkOpen = true; $('#sdk').classList.add('open'); paintBars(); st.startedAt = new Date();
+  const seq = J().steps, ok = { RPD:'SUCCESS', VP:'VERIFIED', VBA:'VALID' };
+  const upTo = (p, s) => { for (const q of seq){ if (q === p){ st.steps[q] = fakeStep(q, s); break; } st.steps[q] = fakeStep(q, ok[q]); } };
+  const fillAll = () => seq.forEach(q => st.steps[q] = fakeStep(q, ok[q]));
+  const result = (status, failed, reason) => { st.final = { status, failed, reason }; go('result'); };
+  st.rpdTxn = hex32(); st.expiryEnd = Date.now() + cfg.expiry * 60000; st.app = 'PhonePe';
+  const fill = () => { st.form = { vpa:CUST.vpa, name:CUST.typed, acct:CUST.acct, acct2:CUST.acct, ifsc:CUST.ifsc }; };
+  const saveCfg = () => { const m = cfg.mode, pf = st.pf; st.pvRestore = () => { cfg.mode = m; st.pf = pf; }; };
+  st.pv = id;
+  if (id === 'consent') go('consent');
+  else if (id === 'apps' || id === 'sheet' || id === 'awaiting' || id === 'awaiting-net' || id === 'dialog'){
+    st.steps.RPD = fakeStep('RPD', 'PENDING');
+    if (id.startsWith('awaiting') || id === 'dialog'){ st.showTry = true; st.netLost = id === 'awaiting-net'; go('awaiting'); if (id === 'dialog') openDialog(); }
+    else { go('apps'); if (id === 'sheet') openSheet(); }
+  }
+  else if (id === 'entry') go('entry');
+  else if (id === 'entry-err'){ st.form = { vpa:'aditi', name:'A#', acct:'50100', acct2:'5010', ifsc:'hdfc012' }; st.touched = { vpa:1, name:1, acct:1, acct2:1, ifsc:1 }; st.showAll = true; saveCfg(); cfg.mode = 'COLLECT'; st.pf = {}; go('entry'); }
+  else if (id === 'entry-skip'){ saveCfg(); cfg.mode = 'SKIP'; fill(); st.pf = { upi_vpa:{value:CUST.vpa,editable:false}, customer_name:{value:CUST.typed,editable:false}, name:{value:CUST.typed,editable:false}, account_number:{value:CUST.acct,editable:false}, ifsc:{value:CUST.ifsc,editable:false} }; go('entry'); }
+  else if (id === 'entry-lock'){ saveCfg(); cfg.mode = 'COLLECT'; fill(); st.pf = { upi_vpa:{value:CUST.vpa,editable:false}, customer_name:{value:CUST.typed,editable:false}, name:{value:CUST.typed,editable:true}, account_number:{value:CUST.acct,editable:false}, ifsc:{value:CUST.ifsc,editable:false} }; go('entry'); }
+  else if (id === 'entry-a2'){ saveCfg(); cfg.mode = 'COLLECT'; st.pf = {}; fill(); st.attempt = 2; if (st.j === 'VP_VBA'){ st.tried = [CUST.vpa]; st.touched = { vpa:1 }; } go('entry'); }
+  else if (id === 'verifying' || id === 'verifying-pend'){
+    const i = id === 'verifying-pend' ? seq.indexOf('VP') : Math.min(1, seq.length - 1);
+    st.prog = {}; seq.forEach((q, k) => { if (k < i){ st.prog[q] = 'done'; st.steps[q] = fakeStep(q, ok[q]); } else if (k === i) st.prog[q] = id === 'verifying-pend' ? 'pend' : 'active'; else st.prog[q] = 'wait'; });
+    if (J().entry) st.form.vpa = st.form.vpa || CUST.vpa;
+    go('verifying');
+  }
+  else if (id === 'processing'){ go('processing'); }
+  else if (id === 'r-verified'){ fillAll(); result('VERIFIED'); }
+  else if (id === 'r-declined'){ upTo('RPD', 'FAILED'); result('NOT_VERIFIED', 'RPD', { b:'Payment declined', s:'Your bank declined the ₹1 payment.' }); }
+  else if (id === 'r-expired'){ upTo('RPD', 'EXPIRED'); result('NOT_VERIFIED', 'RPD', { b:'Payment link expired', s:'No money was taken.' }); }
+  else if (id === 'r-vpfail'){ upTo('VP', 'NOT_VERIFIED'); result('NOT_VERIFIED', 'VP', { b:VPR[0].b, s:VPR[0].s }); }
+  else if (id === 'r-pending'){ upTo('VP', 'PENDING'); result('PENDING', 'VP'); }
+  else if (id === 'r-invalid'){ upTo('VBA', 'INVALID'); result('NOT_VERIFIED', 'VBA', { b:'Invalid account number or IFSC', s:'The account number/IFSC passed is invalid.' }); }
+  else if (id === 'r-inconc'){ upTo('VBA', 'INCONCLUSIVE'); result('INCONCLUSIVE', 'VBA', { b:'Bank account details', s:'could not be verified.' }); }
+  else if (id === 'r-nre'){ upTo('VBA', 'NRE'); result('NRE'); }
+  else if (id === 'r-modify'){
+    saveCfg(); cfg.mode = 'COLLECT'; st.pf = {}; fill();
+    const p = J().entry === 'vp' ? 'VP' : 'VBA';
+    upTo(p, p === 'VP' ? 'NOT_VERIFIED' : 'INVALID');
+    result('NOT_VERIFIED', p, p === 'VP' ? { b:VPR[0].b, s:VPR[0].s } : { b:'Invalid account number or IFSC', s:'The account number/IFSC passed is invalid.' });
+  }
+  else if (id.startsWith('e-')){
+    const k = id.slice(2), E = errDef(k, seq[0]);
+    if (E.step && seq.includes(E.step) && E.step !== seq[0]) upTo(E.step, 'ERROR');
+    st.err = E; go('error');
+  }
+  log('SDK', `Preview · <b>${esc((pvList().find(x => x.id === id) || {}).l || id)}</b> · sample data, no callbacks`);
+  renderScreens(); renderState();
+}
+function pvBanner(){
+  const c = $('#caption'); if (!c) return;
+  if (st.pv && st.mode === 'dev'){ const l = (pvList().find(x => x.id === st.pv) || {}).l || st.pv; c.innerHTML = `<span class="pvchip">Preview</span>${esc(l)} with sample data. Restart runs the journey live.`; }
+}
+/* ---------- element inspector ---------- */
+const ANN = [
+  ['.s-head',['SdkHeader','logo · header_title · background · border']],
+  ['.s-logo',['MerchantLogo','logo (PNG or vector, ≤ 512×512) · primary']],
+  ['.s-x',['CloseButton','text_primary']],
+  ['.s-title,.r-h',['Title','title_size · text_primary · font_family']],
+  ['.s-sub',['BodyText','body_size · text_secondary']],
+  ['.s-cap',['Caption','caption_size · text_secondary']],
+  ['.s-num',['StepsSummary','text_primary · border']],
+  ['.s-note',['InfoNote','surface · border · card_corner_radius']],
+  ['.s-chk',['ConsentCheckbox','primary · on_primary · terms_url (wording fixed by Decentro)']],
+  ['.s-btn.pri',['PrimaryButton','primary · on_primary · button_style · button_corner_radius · button_height · button_text_case']],
+  ['.s-btn.sec',['SecondaryButton','border · text_primary · button_corner_radius · button_height']],
+  ['.s-btn.txt',['TextButton','text_primary']],
+  ['.s-f',['TextField','input_style · input_corner_radius · input_fill · input_border_focused · border · error']],
+  ['.s-ro',['ReadOnlySummary','surface · card_corner_radius']],
+  ['.s-attempt',['AttemptChip','surface · text_secondary']],
+  ['.cs',['PaymentSummaryCard','surface · card_corner_radius · error (expiry)']],
+  ['.co-sel',['SectionHeading','text_primary · text_secondary']],
+  ['.op-r',['PaymentOptionRow','background · border · card_corner_radius']],
+  ['.co-tr',['TrustFooter','success · text_secondary']],
+  ['.spinner',['Loader','border · text_primary']],
+  ['.s-pill',['ExpiryTimer','surface · error under 1 min']],
+  ['.s-link',['TextLink','text_primary']],
+  ['.s-prog',['ProgressList','text_primary · border · warning · error']],
+  ['.r-ic',['ResultIcon','success · warning · error']],
+  ['.s-call',['ReasonCallout','surface · border · card_corner_radius']],
+  ['.s-card',['DetailsCard','border · card_corner_radius · account masking fixed by Decentro']],
+  ['.s-sline',['StepLine','success · error · warning']],
+  ['.s-refund',['RefundLine','text_secondary']],
+  ['.s-foot',['PoweredByFooter','fixed by Decentro, not themeable']],
+  ['.sheet',['BottomSheet','background · border']],
+  ['.dlg',['CancelDialog','background · primary']]
+];
+function annotate(){
+  ['#sdk','#sheet','#dlg'].forEach(r => { const root = $(r); if (!root) return;
+    ANN.forEach(([sel, [n, k]]) => { if (root.matches(sel)){ root.dataset.c = n; root.dataset.t = k; } root.querySelectorAll(sel).forEach(el => { el.dataset.c = n; el.dataset.t = k; }); });
+  });
+}
+const toHex = c => { const m = String(c).match(/[\d.]+/g); if (!m || m.length < 3) return null; if (m.length === 4 && +m[3] === 0) return 'transparent'; return '#' + m.slice(0,3).map(x => (+x).toString(16).padStart(2,'0')).join('').toUpperCase(); };
+function tokenOf(hex){ if (!hex || hex === 'transparent') return ''; const pal = effTheme().pal; const k = Object.keys(pal).find(x => pal[x].toUpperCase() === hex); return k ? ' · ' + k : ''; }
+function setInspect(on){
+  st.inspect = on; st.pin = null;
+  $('#device').classList.toggle('inspecting', on);
+  $('#btnInspect').setAttribute('aria-pressed', on);
+  if (!on){ $('#inspBox').hidden = true; $('#inspTip').hidden = true; }
+  else toast('Inspect: hover any element. Click to pin, Esc to exit.');
+}
+function inspectAt(el, ev){
+  const box = $('#inspBox'), tip = $('#inspTip');
+  if (!el){ if (!st.pin){ box.hidden = true; tip.hidden = true; } return; }
+  const vp = $('#vp'), vr = vp.getBoundingClientRect(), sc = vr.width / vp.offsetWidth, r = el.getBoundingClientRect();
+  box.hidden = false; box.dataset.n = el.dataset.c;
+  Object.assign(box.style, { left:(r.left - vr.left)/sc + 'px', top:(r.top - vr.top)/sc + 'px', width:r.width/sc + 'px', height:r.height/sc + 'px' });
+  const cs = getComputedStyle(el), txt = el.querySelector('b, span, small, label, input') ? getComputedStyle(el.querySelector('b, span, label, input') || el) : cs;
+  const fg = toHex(cs.color), bg = toHex(cs.backgroundColor), bd = parseFloat(cs.borderTopWidth) ? toHex(cs.borderTopColor) : null;
+  const sw = h => h && h !== 'transparent' ? `<i class="sw2" style="background:${h}"></i>${h}${tokenOf(h)}` : 'none';
+  tip.innerHTML = `<b>${el.dataset.c}</b><div class="r">
+    <span>Size</span><em>${Math.round(r.width/sc)} × ${Math.round(r.height/sc)} dp</em>
+    <span>Type</span><em>${parseFloat(txt.fontSize)} sp · ${txt.fontWeight}${cs.textTransform === 'uppercase' ? ' · UPPERCASE' : ''}</em>
+    <span>Text</span><em>${sw(fg)}</em>
+    <span>Fill</span><em>${sw(bg)}</em>
+    ${bd ? `<span>Border</span><em>${sw(bd)}</em>` : ''}
+    ${parseFloat(cs.borderTopLeftRadius) ? `<span>Radius</span><em>${parseFloat(cs.borderTopLeftRadius) > 200 ? 'pill' : parseFloat(cs.borderTopLeftRadius) + ' dp'}</em>` : ''}
+    ${parseFloat(cs.paddingLeft) && el.tagName !== 'BUTTON' ? `<span>Padding</span><em>${[cs.paddingTop, cs.paddingRight, cs.paddingBottom, cs.paddingLeft].map(x => Math.round(parseFloat(x))).join(' ')} dp</em>` : ''}
+  </div><div class="k">Theme: ${esc(el.dataset.t)}</div>`;
+  tip.hidden = false;
+  const x = Math.min(innerWidth - 300, (ev ? ev.clientX : r.right) + 16), y = Math.min(innerHeight - tip.offsetHeight - 10, Math.max(10, (ev ? ev.clientY : r.top) + 12));
+  tip.style.left = x + 'px'; tip.style.top = y + 'px';
+}
+$('#vp').addEventListener('mousemove', e => { if (!st.inspect || st.pin) return; inspectAt(e.target.closest('[data-c]'), e); });
+$('#vp').addEventListener('mouseleave', () => { if (st.inspect && !st.pin){ $('#inspBox').hidden = true; $('#inspTip').hidden = true; } });
+$('#vp').addEventListener('click', e => { if (!st.inspect) return; e.preventDefault(); e.stopPropagation(); const el = e.target.closest('[data-c]'); st.pin = st.pin === el ? null : el; inspectAt(el, e); }, true);
+$('#btnInspect').addEventListener('click', () => setInspect(!st.inspect));
+
+/* ---------- code tab (Developer mode) ---------- */
+function backendSnippets(){
+  return `// Merchant backend · token endpoint the SDK's tokenProvider calls.
+// Credentials stay on the server; the app only ever sees a short-lived token.
+// Illustrative: confirm the auth endpoint and expiry with Decentro (OP-3, OP-4).
+app.post('/decentro/sdk-token', requireUser, async (req, res) => {
+  const set = req.body.credential_set;               // "DECFIN" | "DECENTRO"
+  const creds = set === 'DECFIN' ? DECFIN_CREDS : DECENTRO_CREDS;
+  const { token, expires_at } = await decentroAuth.issueToken(creds);
+  res.json({ token, expires_at });                    // SDK caches until expiry
+});
+
+// Merchant backend · confirm the outcome before acting on it (§5.5.9).
+// The result object is built on the phone, so re-check each step server-side.
+async function confirmJourney(result) {
+  for (const step of result.steps.filter(s => s.status !== 'NOT_RUN')) {
+    if (step.product === 'VBA') continue;             // VBA has no status API (OP-12)
+    const status = await decentro.getStatus(step.product, step.decentro_txn_id);
+    if (status !== step.status) throw new Error('Mismatch on ' + step.reference_id);
+  }
+}`;
+}
+
 /* ============================================================
    LAYOUT
    ============================================================ */
@@ -1778,13 +2547,31 @@ $('#btnRestart').addEventListener('click', restart);
 $('#btnRestartTop').addEventListener('click', restart);
 $('#btnBack').addEventListener('click', handleBack);
 $('#btnFill').addEventListener('click', fillSample);
-document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
-  document.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-selected', x === t));
-  ['log','req','res','spec'].forEach(k => $('#tp-'+k).hidden = k !== t.dataset.tab);
-}));
+$('#tabs').addEventListener('click', e => { const t = e.target.closest('.tab'); if (t) showTab(t.dataset.tab); });
+
+
+$('#tp-scr').addEventListener('click', e => { const b = e.target.closest('[data-pv]'); if (b) preview(b.dataset.pv); });
+$('#tp-net').addEventListener('click', e => {
+  const c = e.target.closest('[data-curl]'); if (c){ const en = st.net.find(x => x.id === +c.dataset.curl); copyText(curlOf(en), c); return; }
+  const r = e.target.closest('[data-net]'); if (r){ const id = +r.dataset.net; st.netOpen = st.netOpen === id ? null : id; renderNet(); }
+});
+$('#tp-net').addEventListener('change', e => { if (e.target.id === 'hidePolls'){ st.hidePolls = e.target.checked; renderNet(); } });
+$('#modeSeg').addEventListener('click', e => { const b = e.target.closest('button'); if (b) setMode(b.dataset.v); });
+document.addEventListener('keydown', e => {
+  const typing = e.target.closest && e.target.closest('input, textarea, select, [contenteditable]');
+  if (e.key === 'Escape' && st.inspect){ setInspect(false); return; }
+  if (typing || e.metaKey || e.ctrlKey || e.altKey) return;
+  if (st.mode === 'dev' && (e.key === 'i' || e.key === 'I')) setInspect(!st.inspect);
+});
+function copyText(t, btn){
+  const done = () => { if (btn){ const o = btn.innerHTML; btn.innerHTML = 'Copied'; setTimeout(() => btn.innerHTML = o, 1200); } };
+  try { navigator.clipboard.writeText(t).then(done).catch(() => fallbackCopy(t, done)); } catch(e){ fallbackCopy(t, done); }
+}
+function fallbackCopy(t, done){ const a = document.createElement('textarea'); a.value = t; a.style.position = 'fixed'; a.style.opacity = '0'; document.body.appendChild(a); a.select(); try { document.execCommand('copy'); done(); } catch(e){} a.remove(); }
 
 /* ---------- boot ---------- */
-buildPresets(); syncControls(); freshRun(); theme(); restart(); fit();
+buildPresets(); syncControls(); freshRun(); theme(); buildTabs(); restart(); fit();
+if (location.hash === '#dev') setMode('dev');
 requestAnimationFrame(fit);
 document.fonts && document.fonts.ready.then(fit);
 
