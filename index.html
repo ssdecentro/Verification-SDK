@@ -1,4 +1,8 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Verification SDK Demo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -324,10 +328,54 @@ li.pend small{color:var(--s-warn);font-weight:500}
 .s-sline{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;font-size:13.5px;font-weight:500}
 .s-sline span{display:inline-flex;align-items:center;gap:4px}
 .s-sline svg{width:14px;height:14px;stroke-width:3}
-.s-sline .ok{color:var(--s-ok)} .s-sline .bad{color:var(--s-err)} .s-sline .wn{color:var(--s-warn)} .s-sline .nr{color:var(--s-tx2);opacity:.7}
+.s-sline .sl-ok{color:var(--s-ok)} .s-sline .sl-bad{color:var(--s-err)} .s-sline .sl-wn{color:var(--s-warn)} .s-sline .sl-nr{color:var(--s-tx2);opacity:.7}
 .s-refund{font-size:13px;color:var(--s-tx2);text-align:center}
 
 
+
+/* status screens — every outcome except Verified */
+.st{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6px 0 4px}
+.st-em{position:relative;flex:none;width:68px;height:68px;border-radius:50%;display:grid;place-items:center;color:var(--tone);background:color-mix(in srgb,var(--tone) 11%,var(--s-bg));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--tone) 30%,transparent);margin:22px 0 18px}
+.st-em::before,.st-em::after{content:"";position:absolute;border-radius:50%;pointer-events:none}
+.st-em::before{inset:-11px;border:1px solid color-mix(in srgb,var(--tone) 20%,transparent)}
+.st-em::after{inset:-23px;border:1px solid color-mix(in srgb,var(--tone) 9%,transparent)}
+.st-em.spin::before{border-style:dashed;border-color:color-mix(in srgb,var(--tone) 45%,transparent);animation:rot 7s linear infinite}
+.st-em svg{width:28px;height:28px;stroke-width:2.3}
+.st-badge{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:999px;font-size:12px;font-weight:600;color:var(--tone);background:color-mix(in srgb,var(--tone) 9%,var(--s-bg));border:1px solid color-mix(in srgb,var(--tone) 26%,transparent);white-space:nowrap}
+.st-badge i{width:6px;height:6px;border-radius:50%;background:var(--tone)}
+.st-t{margin:10px 0 0;font-size:calc(var(--s-ts) - 1px);font-weight:700;letter-spacing:-.015em;line-height:1.25;text-wrap:balance;max-width:300px}
+.st-d{margin:6px 0 0;font-size:14px;line-height:1.45;color:var(--s-tx2);text-wrap:balance;max-width:300px}
+.st-card{width:100%;margin-top:18px;border:1px solid var(--s-bd);border-radius:var(--card-r);background:var(--s-bg);text-align:left;overflow:hidden;flex:none}
+.st-h{padding:11px 14px 2px;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--s-tx2)}
+.st-rows{list-style:none;margin:0;padding:4px 14px 8px}
+.st-row{position:relative;display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:11px;align-items:start;padding:7px 0}
+.st-row:not(:last-child)::after{content:"";position:absolute;left:11px;top:33px;bottom:-5px;width:2px;border-radius:1px;background:var(--s-bd)}
+.st-row.is-ok:not(:last-child)::after{background:color-mix(in srgb,var(--s-ok) 45%,var(--s-bd))}
+.st-dot{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;flex:none}
+.st-dot svg{width:13px;height:13px;stroke-width:3}
+.st-row.is-ok .st-dot{background:var(--s-ok);color:var(--s-bg)}
+.st-row.is-bad .st-dot{background:var(--s-err);color:var(--s-bg)}
+.st-row.is-wn .st-dot{background:var(--s-warn);color:var(--s-bg)}
+.st-row.is-nr .st-dot{border:1.5px dashed var(--s-bd);color:var(--s-tx2)}
+.st-row.is-nr .st-dot svg{opacity:.6}
+.st-row b{display:block;font-size:14px;font-weight:600;line-height:1.3}
+.st-row.is-nr b{color:var(--s-tx2)}
+.st-row small{display:block;font-size:12.5px;line-height:1.4;color:var(--s-tx2);margin-top:1px;overflow-wrap:anywhere}
+.st-row.is-bad small{color:var(--s-tx)}
+.st-tag{font-size:11.5px;font-weight:600;padding-top:3px;white-space:nowrap}
+.st-row.is-ok .st-tag{color:var(--s-ok)} .st-row.is-bad .st-tag{color:var(--s-err)} .st-row.is-wn .st-tag{color:var(--s-warn)} .st-row.is-nr .st-tag{color:var(--s-tx2);font-weight:500}
+.st-kvs{border-top:1px solid var(--s-bd);padding:4px 14px}
+.st-kv{display:flex;justify-content:space-between;gap:12px;padding:6px 0;font-size:13.5px}
+.st-kv span{color:var(--s-tx2)} .st-kv b{font-weight:600;text-align:right;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.st-foot{display:flex;align-items:flex-start;gap:8px;padding:10px 14px;background:var(--s-surf);border-top:1px solid var(--s-bd);font-size:12.5px;line-height:1.45;color:var(--s-tx2)}
+.st-foot svg{width:15px;height:15px;flex:none;margin-top:1px}
+.st-foot b{color:var(--s-tx);font-weight:600}
+.st-foot code{font-family:var(--mono);font-size:11px;color:var(--s-tx);background:var(--s-bg);border:1px solid var(--s-bd);border-radius:4px;padding:0 4px}
+.st-foot + .st-foot{border-top-color:color-mix(in srgb,var(--s-bd) 60%,transparent)}
+.st-att{display:flex;align-items:center;justify-content:center;gap:10px;font-size:12.5px;color:var(--s-tx2);margin-bottom:4px}
+.st-att .bars{display:flex;gap:4px}
+.st-att i{width:20px;height:4px;border-radius:2px;background:var(--s-bd)}
+.st-att i.on{background:var(--s-tx)}
 /* payment options — production checkout component (decentro-netbanking-connect.html), themed */
 .cs{background:var(--s-surf);border-radius:var(--card-r);padding:14px 16px 12px;flex:none}
 .cs-r{display:flex;justify-content:space-between;align-items:center;gap:12px}
@@ -467,15 +515,15 @@ body.devmode .main{grid-template-columns:clamp(320px,25vw,400px) minmax(0,1fr) c
 /* network */
 .nt-bar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;font-size:var(--fs-s);color:var(--fg-2)}
 .nt-bar label{display:inline-flex;align-items:center;gap:6px;cursor:pointer}
-.nr{display:grid;grid-template-columns:42px minmax(0,1fr) auto 52px;gap:8px;align-items:center;width:100%;text-align:left;border:0;border-bottom:1px solid var(--line);background:transparent;padding:7px 4px;font-size:var(--fs-s)}
-.nr:hover{background:var(--panel-2)}
-.nr.on{background:var(--panel-2)}
-.nr .mt{font:600 10.5px var(--mono)}
-.nr .pt{font:11px var(--mono);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.nr .pt small{display:block;font-family:var(--sans);font-size:10.5px;color:var(--fg-3)}
-.nr .sc{font:600 10.5px var(--mono);border-radius:5px;padding:1px 6px;border:1px solid}
+#tp-net .nr{display:grid;grid-template-columns:42px minmax(0,1fr) auto 52px;gap:8px;align-items:center;width:100%;text-align:left;border:0;border-bottom:1px solid var(--line);background:transparent;padding:7px 4px;font-size:var(--fs-s)}
+#tp-net .nr:hover{background:var(--panel-2)}
+#tp-net .nr.on{background:var(--panel-2)}
+#tp-net .nr .mt{font:600 10.5px var(--mono)}
+#tp-net .nr .pt{font:11px var(--mono);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#tp-net .nr .pt small{display:block;font-family:var(--sans);font-size:10.5px;color:var(--fg-3)}
+#tp-net .nr .sc{font:600 10.5px var(--mono);border-radius:5px;padding:1px 6px;border:1px solid}
 .sc.s2{color:var(--ok);background:var(--ok-soft);border-color:var(--ok-bd)} .sc.s4,.sc.s5{color:var(--err);background:var(--err-soft);border-color:var(--err-bd)}
-.nr .du{font:10.5px var(--mono);color:var(--fg-3);text-align:right}
+#tp-net .nr .du{font:10.5px var(--mono);color:var(--fg-3);text-align:right}
 .nd{padding:8px 4px 14px;border-bottom:1px solid var(--line)}
 .nd .lbl{font-size:10px;font-weight:600;color:var(--fg-3);text-transform:uppercase;letter-spacing:.06em;margin:10px 0 4px;display:flex;justify-content:space-between;align-items:center}
 .nd pre.code{margin:0;max-height:260px;overflow:auto}
@@ -546,6 +594,8 @@ body.devmode .tab{padding:7px 8px 8px}
 @media (max-height:700px){ .caption{display:none} }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
+</head>
+<body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
   <symbol id="decentro-logo" viewBox="0 0 2749.67 538.23">
@@ -711,6 +761,14 @@ const IC = {
   info:'<circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/>', timer:'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M9 2h6"/>',
   dash:'<path d="M6 12h12"/>', dots:'<path d="M5 12h.01M12 12h.01M19 12h.01"/>',
   copy:'<rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/>',
+  wifioff:'<path d="M2 2l20 20"/><path d="M8.5 16.5a5 5 0 0 1 7 0"/><path d="M5 12.9a10 10 0 0 1 5.2-2.8"/><path d="M19 12.9a10 10 0 0 0-2.3-1.6"/><path d="M2 8.8a15 15 0 0 1 4.2-2.7"/><path d="M22 8.8A15 15 0 0 0 11 5.1"/><path d="M12 20h.01"/>',
+  phone:'<rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/>',
+  server:'<rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/>',
+  hand:'<path d="M18 11V6a2 2 0 0 0-4 0v5"/><path d="M14 10V4a2 2 0 0 0-4 0v6"/><path d="M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.9-6-2.4L2.4 16a2 2 0 0 1 2.8-2.8L7 15"/>',
+  ban:'<circle cx="12" cy="12" r="9"/><path d="m5.7 5.7 12.6 12.6"/>',
+  receipt:'<path d="M5 2v20l2.5-1.5L10 22l2-1.5 2 1.5 2.5-1.5L19 22V2l-2.5 1.5L14 2l-2 1.5L10 2 7.5 3.5z"/><path d="M9 8h6M9 12h6"/>',
+  timer2:'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M10 2h4"/>',
+  shield:'<path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5z"/>',
   grid:'<rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><rect x="14" y="14" width="6" height="6" rx="1.5"/>',
   rupee:'<path d="M6 4h11M6 8.5h11M6 13h4.5a4.5 4.5 0 000-9M6 13l7.5 7.5"/>'
 };
@@ -1162,12 +1220,12 @@ function bindEntry(){
 /* ---------- result + error screens ---------- */
 function stepMark(p){
   const s = st.steps[p]?.status || 'NOT_RUN';
-  if (['SUCCESS','VERIFIED','VALID'].includes(s)) return `<span class="ok">${svg('check')}${STEPNAME[p]}</span>`;
-  if (s === 'INCONCLUSIVE') return `<span class="wn">${svg('q')}${STEPNAME[p]}</span>`;
-  if (s === 'NRE') return `<span class="wn">${svg('bang')}${STEPNAME[p]}</span>`;
-  if (s === 'PENDING') return `<span class="wn">${svg('dots')}${STEPNAME[p]}</span>`;
-  if (s === 'NOT_RUN') return `<span class="nr">${svg('dash')}${STEPNAME[p]}</span>`;
-  return `<span class="bad">${svg('x')}${STEPNAME[p]}</span>`;
+  if (['SUCCESS','VERIFIED','VALID'].includes(s)) return `<span class="sl-ok">${svg('check')}${STEPNAME[p]}</span>`;
+  if (s === 'INCONCLUSIVE') return `<span class="sl-wn">${svg('q')}${STEPNAME[p]}</span>`;
+  if (s === 'NRE') return `<span class="sl-wn">${svg('bang')}${STEPNAME[p]}</span>`;
+  if (s === 'PENDING') return `<span class="sl-wn">${svg('dots')}${STEPNAME[p]}</span>`;
+  if (s === 'NOT_RUN') return `<span class="sl-nr">${svg('dash')}${STEPNAME[p]}</span>`;
+  return `<span class="sl-bad">${svg('x')}${STEPNAME[p]}</span>`;
 }
 const paid = () => st.steps.RPD?.status === 'SUCCESS';
 const PFKEY = k => ({ vpa:'upi_vpa', name: J().entry === 'vp' ? 'customer_name' : 'name', acct:'account_number', ifsc:'ifsc' }[k]);
@@ -1194,7 +1252,77 @@ function resultHeader(){
   if (f.status === 'NRE') return 'The account is valid, but it is an NRE account.';
   return 'Verification is taking longer than usual';
 }
+/* ---------- status screens (every outcome except Verified) ----------
+   One structure: emblem + badge + title + next step, then a "What happened" card
+   with a step tracker, account details where relevant, and a refund / reference footer. */
+const TONE = { bad:'var(--s-err)', wn:'var(--s-warn)', ok:'var(--s-ok)', nt:'var(--s-tx2)' };
+const STEP_LABEL = { RPD:'₹1 payment', VP:'UPI ID check', VBA:'Bank account check' };
+const ERR_ROW = { link:'Payment link couldn\'t be created', offline:'Device offline', noapp:'No UPI app on this phone', unconfirmed:'Payment status couldn\'t be confirmed', missing:'Payer details missing from the bank', session:'Session expired', vp:'Bank didn\'t respond', vp_timeout:'No response from the bank', velocity:'Too many attempts for this UPI ID', vba:'Validation didn\'t complete', unavail:'Verification unavailable right now', masked:'Account details came back masked' };
+const ERR_ICON = { link:'server', offline:'wifioff', noapp:'phone', unconfirmed:'receipt', missing:'receipt', session:'timer2', vp:'server', vp_timeout:'server', velocity:'hand', vba:'server', unavail:'ban', masked:'shield' };
+function stRow(p, errKey){
+  const s = st.steps[p]?.status || 'NOT_RUN', d = st.steps[p]?.data || {}, f = st.final;
+  const vpa = st.steps.RPD?.data?.payer_vpa || st.steps.VP?.data?.upi_vpa || st.form.vpa;
+  const acct = st.steps.VP?.data?.account_number || st.steps.RPD?.data?.payer_account_number || st.form.acct;
+  let t = 'nr', tag = 'Skipped', sub = 'Not run · an earlier step stopped', ic = 'dash';
+  const isErr = errKey && st.err && st.err.step === p && !['SUCCESS','VERIFIED','VALID','NRE','INCONCLUSIVE','INVALID','NOT_VERIFIED','FAILED','EXPIRED'].includes(s);
+  if (isErr){ t = 'bad'; tag = 'Interrupted'; sub = ERR_ROW[errKey] || 'Couldn\'t complete'; ic = 'x'; }
+  else if (['SUCCESS','VERIFIED','VALID'].includes(s)){ t = 'ok'; tag = 'Done'; ic = 'check';
+    sub = p === 'RPD' ? 'Received from ' + esc(vpa) : p === 'VP' ? esc(d.upi_vpa || vpa) + ' is linked to a bank account' : mask(acct) + ' is valid'; }
+  else if (s === 'FAILED'){ t = 'bad'; tag = 'Declined'; ic = 'x'; sub = 'Your bank declined the payment'; }
+  else if (s === 'EXPIRED'){ t = 'bad'; tag = 'Expired'; ic = 'x'; sub = 'Link expired before payment'; }
+  else if (s === 'NOT_VERIFIED' || s === 'INVALID'){ t = 'bad'; tag = 'Failed'; ic = 'x'; sub = f && f.failed === p && f.reason ? esc((f.reason.b + ' ' + (f.reason.s || '')).trim()) : 'Not verified'; }
+  else if (s === 'PENDING'){ t = 'wn'; tag = 'Pending'; ic = 'clock'; sub = p === 'RPD' ? 'Waiting for the payment' : 'Your bank is yet to confirm'; }
+  else if (s === 'INCONCLUSIVE'){ t = 'wn'; tag = 'Unclear'; ic = 'q'; sub = 'Your bank couldn\'t confirm the status'; }
+  else if (s === 'NRE'){ t = 'wn'; tag = 'NRE'; ic = 'bang'; sub = 'Valid account, flagged as NRE'; }
+  else if (s === 'ERROR'){ t = 'bad'; tag = 'Interrupted'; ic = 'x'; sub = 'Couldn\'t complete'; }
+  return `<li class="st-row is-${t}"><span class="st-dot">${svg(ic)}</span><span><b>${STEP_LABEL[p]}</b><small>${sub}</small></span><span class="st-tag">${tag}</span></li>`;
+}
+function stScreen(o){
+  return `<div class="st" style="--tone:${TONE[o.tone]}">
+    <div class="st-em ${o.spin ? 'spin' : ''} pop">${svg(o.icon)}</div>
+    <span class="st-badge"><i></i>${o.badge}</span>
+    <h1 class="st-t">${o.title}</h1>
+    ${o.desc ? `<p class="st-d">${o.desc}</p>` : ''}
+    <div class="st-card">
+      <div class="st-h">What happened</div>
+      <ul class="st-rows">${J().steps.map(p => stRow(p, o.errKey)).join('')}</ul>
+      ${o.details && o.details.length ? `<div class="st-kvs">${o.details.map(([k, v]) => `<div class="st-kv"><span>${k}</span><b>${esc(v ?? '—')}</b></div>`).join('')}</div>` : ''}
+      ${(o.foot || []).map(x => `<div class="st-foot">${svg(x.icon)}<span>${x.html}</span></div>`).join('')}
+    </div>
+  </div>`;
+}
+function vStatus(){
+  const f = st.final, d = st.steps, R = d.RPD?.data || {}, V = d.VP?.data || {}, j = st.j, entry = J().entry;
+  const pfv = k => st.pf[k] && st.pf[k].value;
+  const acct = V.account_number || R.payer_account_number || (j === 'VBA' ? (st.form.acct || pfv('account_number') || CUST.acct) : '');
+  const ifsc = V.ifsc || R.payer_account_ifsc || (j === 'VBA' ? (st.form.ifsc || pfv('ifsc') || CUST.ifsc) : '');
+  const vpa = V.upi_vpa || R.payer_vpa;
+  const mod = canModify();
+  const foot = paid() ? [{ icon:'rupee', html:'<b>₹1 refund</b> · back in your account within 3 working days' }] : [];
+  let o;
+  if (f.status === 'NOT_VERIFIED'){
+    const desc = f.failed === 'RPD' ? 'No money was taken. You can start again from the app.'
+      : f.failed === 'VP' ? (mod ? 'Check the UPI ID and try again, or use a different one.' : 'Try again from the app with a different UPI ID.')
+      : (mod ? 'Check the account number and IFSC, then try again.' : 'Try again from the app with a different bank account.');
+    o = { tone:'bad', icon:'x', badge:'Not verified', title:resultHeader(), desc };
+  } else if (f.status === 'PENDING'){
+    o = { tone:'wn', icon:'clock', spin:true, badge:'Pending at bank', title:resultHeader(), desc:"We'll update you once your bank confirms. You can close this screen." };
+  } else if (f.status === 'INCONCLUSIVE'){
+    o = { tone:'wn', icon:'q', badge:'Inconclusive', title:resultHeader(), desc:'Your bank didn\'t confirm whether this account is active.',
+      details: j === 'VBA' ? [] : [...(vpa ? [['UPI ID', vpa]] : []), ['Account', mask(acct)], ['IFSC', ifsc]] };
+  } else {
+    const nm = j === 'RPD_VBA' ? R.payer_name : j === 'RPD_VP_VBA' ? V.name_as_per_bank : '';
+    o = { tone:'wn', icon:'bang', badge:'NRE account', title:'Account is valid, but it\'s an NRE account', desc:'Some services don\'t accept NRE accounts. Check before you continue.',
+      details:[...(nm ? [['Name', nm]] : []), ...(j === 'VP_VBA' && vpa ? [['UPI ID', vpa]] : []), ['Account', mask(acct)], ['IFSC', ifsc], ['Account type', 'NRE']] };
+  }
+  o.foot = foot;
+  const showAttempt = entry && f.failed === (entry === 'vp' ? 'VP' : 'VBA') && (mod || st.attempt > 1);
+  const meter = showAttempt ? `<div class="st-att"><span>Attempt ${st.attempt} of 3</span><span class="bars">${[1,2,3].map(n => `<i class="${n <= st.attempt ? 'on' : ''}"></i>`).join('')}</span></div>` : '';
+  const acts = mod ? `<button class="s-btn pri" data-act="modify">Modify details</button><button class="s-btn txt" data-act="close">Close</button>` : `<button class="s-btn sec" data-act="close">Close</button>`;
+  return stScreen(o) + `<div class="s-act">${meter}${acts}</div>`;
+}
 function vResult(){
+  if (st.final.status !== 'VERIFIED') return vStatus();
   const f = st.final, d = st.steps, R = d.RPD?.data || {}, V = d.VP?.data || {}, B = d.VBA?.data || {};
   const ic = { VERIFIED:['ok','check'], NOT_VERIFIED:['bad','x'], INCONCLUSIVE:['wn','q'], NRE:['wn','bang'], PENDING:['wn','clock'] }[f.status];
   const acct = V.account_number || R.payer_account_number || (st.j === 'VBA' ? st.form.acct : '');
@@ -1251,9 +1379,13 @@ function errDef(key, step){
   return { key, ...D[key] };
 }
 function vError(){
-  const e = st.err;
-  return `<div class="s-center" style="gap:12px;margin-top:8px"><div class="r-ic tri pop">${svg('tri')}</div><h1 class="r-h">${e.h}</h1><p class="s-sub" style="max-width:270px">${e.r}</p></div>
-  <div class="s-act">${e.retry ? `<button class="s-btn pri" data-act="retry">${st.retrying ? '<span class="spin"></span>' : 'Retry'}</button><button class="s-btn txt" data-act="close">Close</button>` : `<button class="s-btn sec" data-act="close">Close</button>`}</div>`;
+  const e = st.err, step = e.step;
+  const sent = step && st.steps[step]?.reference_id;
+  const foot = [];
+  if (paid() && e.key !== 'unconfirmed' && e.key !== 'missing') foot.push({ icon:'rupee', html:'<b>₹1 refund</b> · back in your account within 3 working days' });
+  foot.push({ icon:'info', html:`Reference <code>${esc(sent || st.base)}</code> · <code>${e.code}</code>` });
+  const o = { tone: e.retry ? 'wn' : 'bad', icon: ERR_ICON[e.key] || 'tri', badge: e.retry ? 'Temporary issue' : 'Couldn\'t continue', title:e.h, desc:e.r, errKey:e.key, foot };
+  return stScreen(o) + `<div class="s-act">${e.retry ? `<button class="s-btn pri" data-act="retry">${st.retrying ? '<span class="spin"></span>' : 'Try again'}</button><button class="s-btn txt" data-act="close">Close</button>` : `<button class="s-btn sec" data-act="close">Close</button>`}</div>`;
 }
 
 /* ---------- host (merchant) app ---------- */
@@ -1567,7 +1699,7 @@ const RUN = {
       R(200, envl(txn, 'SUCCESS', 'success_account_validation_failed', data), 'rf', 'account_status invalid');
       st.steps.VBA = { ...base, status:'INVALID', api_status:'SUCCESS', response_key:'success_account_validation_failed', data };
       recordAttempt('VBA', ref, inputMasked, 'INVALID', 'success_account_validation_failed'); setProg('VBA', 'fail');
-      endResult('NOT_VERIFIED', 'VBA', { b:'Invalid account number or IFSC', s:msg }); return false;
+      endResult('NOT_VERIFIED', 'VBA', { b:msg, s:'' }); return false;
     }
     if (m.vba === 'inconclusive' && failNow){
       const msg = 'Bank account details could not be verified.';
@@ -2191,6 +2323,7 @@ function edChanged(){
   return q;
 }
 function devApply(){
+  st.pvRestore = null; st.pv = null;
   const ed = $('#reqEd'); let q;
   try { q = JSON.parse(ed.value); } catch(e){ edChanged(); toast('Fix the JSON before running'); return false; }
   applyRequest(q); theme(); syncControls(); buildTabsCounts();
@@ -2214,6 +2347,7 @@ const snapDemo = () => ({ j:st.j, cfg:{ ...cfg } });
 const restoreDemo = s => { if (!s) return; st.j = s.j; Object.assign(cfg, s.cfg); };
 function setMode(m){
   if (m === st.mode) return;
+  if (st.pvRestore){ st.pvRestore(); st.pvRestore = null; } st.pv = null;
   if (m === 'dev'){ st.demoSnap = snapDemo(); applyDemo(); st.mode = 'dev'; buildDevLeft(); }
   else { st.mode = 'demo'; st.tov = null; restoreDemo(st.demoSnap); setInspect(false); }
   document.body.classList.toggle('devmode', st.mode === 'dev');
@@ -2316,6 +2450,7 @@ function renderState(){
 setInterval(() => { if (st.mode === 'dev' && st.tab === 'state') renderState(); }, 1000);
 
 /* ---------- screen gallery ---------- */
+const errStep = k => k === 'masked' ? (has('VP') ? 'VP' : 'RPD') : J().steps[0];
 function pvList(){
   const j = J(), L = [], add = (g, id, l, t) => L.push({ g, id, l, t });
   if (j.entry){ add('Entry','entry','As configured'); add('Entry','entry-err','Validation errors','bad'); add('Entry','entry-skip','SKIP mode'); add('Entry','entry-lock','Fields locked'); add('Entry','entry-a2','Attempt 2 of 3'); }
@@ -2332,7 +2467,7 @@ function pvList(){
   if (has('VP')) errs.push('vp','vp_timeout','velocity');
   if (has('VBA')) errs.push('vba','unavail');
   if (has('VBA') && j.steps.length > 1) errs.push('masked');
-  errs.forEach(k => { const d = errDef(k, j.steps[0]); add('Errors', 'e-' + k, d.code + (d.retry ? ' · Retry' : ''), 'bad'); });
+  errs.forEach(k => { const d = errDef(k, errStep(k)); add('Errors', 'e-' + k, d.code + (d.retry ? ' · Retry' : ''), 'bad'); });
   return L;
 }
 function renderScreens(){
@@ -2385,17 +2520,17 @@ function preview(id){
   else if (id === 'r-expired'){ upTo('RPD', 'EXPIRED'); result('NOT_VERIFIED', 'RPD', { b:'Payment link expired', s:'No money was taken.' }); }
   else if (id === 'r-vpfail'){ upTo('VP', 'NOT_VERIFIED'); result('NOT_VERIFIED', 'VP', { b:VPR[0].b, s:VPR[0].s }); }
   else if (id === 'r-pending'){ upTo('VP', 'PENDING'); result('PENDING', 'VP'); }
-  else if (id === 'r-invalid'){ upTo('VBA', 'INVALID'); result('NOT_VERIFIED', 'VBA', { b:'Invalid account number or IFSC', s:'The account number/IFSC passed is invalid.' }); }
+  else if (id === 'r-invalid'){ upTo('VBA', 'INVALID'); result('NOT_VERIFIED', 'VBA', { b:'The account number/IFSC passed is invalid.', s:'' }); }
   else if (id === 'r-inconc'){ upTo('VBA', 'INCONCLUSIVE'); result('INCONCLUSIVE', 'VBA', { b:'Bank account details', s:'could not be verified.' }); }
   else if (id === 'r-nre'){ upTo('VBA', 'NRE'); result('NRE'); }
   else if (id === 'r-modify'){
     saveCfg(); cfg.mode = 'COLLECT'; st.pf = {}; fill();
     const p = J().entry === 'vp' ? 'VP' : 'VBA';
     upTo(p, p === 'VP' ? 'NOT_VERIFIED' : 'INVALID');
-    result('NOT_VERIFIED', p, p === 'VP' ? { b:VPR[0].b, s:VPR[0].s } : { b:'Invalid account number or IFSC', s:'The account number/IFSC passed is invalid.' });
+    result('NOT_VERIFIED', p, p === 'VP' ? { b:VPR[0].b, s:VPR[0].s } : { b:'The account number/IFSC passed is invalid.', s:'' });
   }
   else if (id.startsWith('e-')){
-    const k = id.slice(2), E = errDef(k, seq[0]);
+    const k = id.slice(2), E = errDef(k, errStep(k));
     if (E.step && seq.includes(E.step) && E.step !== seq[0]) upTo(E.step, 'ERROR');
     st.err = E; go('error');
   }
@@ -2432,6 +2567,15 @@ const ANN = [
   ['.s-link',['TextLink','text_primary']],
   ['.s-prog',['ProgressList','text_primary · border · warning · error']],
   ['.r-ic',['ResultIcon','success · warning · error']],
+  ['.st-em',['StatusEmblem','success · warning · error (tone by outcome)']],
+  ['.st-badge',['StatusBadge','warning · error · surface']],
+  ['.st-t',['StatusTitle','title_size · text_primary']],
+  ['.st-d',['StatusDescription','body_size · text_secondary']],
+  ['.st-card',['WhatHappenedCard','border · card_corner_radius · background']],
+  ['.st-row',['StepRow','success · warning · error · border']],
+  ['.st-kvs',['AccountDetails','border · text_secondary · masking fixed by Decentro']],
+  ['.st-foot',['CardFooter','surface · text_secondary']],
+  ['.st-att',['AttemptMeter','text_primary · border']],
   ['.s-call',['ReasonCallout','surface · border · card_corner_radius']],
   ['.s-card',['DetailsCard','border · card_corner_radius · account masking fixed by Decentro']],
   ['.s-sline',['StepLine','success · error · warning']],
@@ -2576,5 +2720,5 @@ requestAnimationFrame(fit);
 document.fonts && document.fonts.ready.then(fit);
 
 </script>
-
-</body></html>
+</body>
+</html>
